@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameVault - Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="dashboard-body">
+    <nav class="navbar">
+        <div class="nav-logo">GAME<span>VAULT</span></div>
+        <div class="nav-user">
+            <span>Welcome, <strong>
+                    <?php echo htmlspecialchars($_SESSION['username']); ?>
+                </strong></span>
+            <a href="logout.php" class="logout-link">Logout</a>
+        </div>
+    </nav>
+
+    <main class="dashboard-content">
+        <header class="hero-section">
+            <h1>Welcome back to the Arena!</h1>
+            <p>Your portal to the best gaming experiences awaits.</p>
+        </header>
+
+        <section class="game-grid">
+            <div class="game-card">New Releases</div>
+            <div class="game-card">Trending</div>
+            <div class="game-card">Your Library</div>
+        </section>
+    </main>
+</body>
+
+</html>

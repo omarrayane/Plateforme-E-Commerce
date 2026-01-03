@@ -1,0 +1,15 @@
+# System Files
+.DS_Store
+Thumbs.db
+
+# Database
+*.sql
+!database.sql
+
+# PHP
+*.log
+.phpunit.result.cache
+
+# Development tools
+.vscode/
+.idea/
