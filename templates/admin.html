@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - GameStore</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GameDash</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="admin.html">
+                            <i class="fas fa-th-large"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html">
+                            <i class="fas fa-users"></i>
+                            <span>Utilisateurs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Games.html">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Jeux & Cartes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Orders.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Commandes</span>
+                        </a>
+                    </li>
+       
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-link"
+                    onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+           
+        
+            </header>
+
+            <section class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon users-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-details">
+                        <p class="stat-label">Utilisateurs</p>
+                        <h3 class="stat-value">1,250</h3>
+                        <p class="stat-trend positive"><i class="fas fa-arrow-up"></i> +12%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon games-icon"><i class="fas fa-gamepad"></i></div>
+                    <div class="stat-details">
+                        <p class="stat-label">Jeux & Cartes</p>
+                        <h3 class="stat-value">482</h3>
+                        <p class="stat-trend"><i class="fas fa-minus"></i> Stable</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon sales-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="stat-details">
+                        <p class="stat-label">Ventes (Mois)</p>
+                        <h3 class="stat-value">15,420€</h3>
+                        <p class="stat-trend positive"><i class="fas fa-arrow-up"></i> +8%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon tickets-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <div class="stat-details">
+                        <p class="stat-label">Support</p>
+                        <h3 class="stat-value">12</h3>
+                        <p class="stat-trend negative"><i class="fas fa-arrow-down"></i> -5%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recent-activity">
+                <div class="section-header">
+                    <h2>Commandes Récentes</h2>
+                    <a href="Orders.html" class="btn-link">Voir tout</a>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Produit</th>
+                                <th>Date</th>
+                                <th>Prix</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mohamed A.</td>
+                                <td>PlayStation Card 50€</td>
+                                <td>26 Dec 2025</td>
+                                <td>50.00€</td>
+                                <td><span class="status-badge complete">Complété</span></td>
+                                <td><button class="btn-action"><i class="fas fa-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>Sarah K.</td>
+                                <td>Elden Ring (PC)</td>
+                                <td>25 Dec 2025</td>
+                                <td>59.99€</td>
+                                <td><span class="status-badge pending">En attente</span></td>
+                                <td><button class="btn-action"><i class="fas fa-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>Yassine B.</td>
+                                <td>Steam Gift Card 20€</td>
+                                <td>25 Dec 2025</td>
+                                <td>20.00€</td>
+                                <td><span class="status-badge complete">Complété</span></td>
+                                <td><button class="btn-action"><i class="fas fa-eye"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/admin.js"></script>
+</body>
+
+</html>

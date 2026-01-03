@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Jeux & Cartes - GameStore</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../assets/css/games.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GameDash</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="admin.html">
+                            <i class="fas fa-th-large"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html">
+                            <i class="fas fa-users"></i>
+                            <span>Utilisateurs</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="Games.html">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Jeux & Cartes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Orders.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Commandes</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-link"
+                    onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Rechercher un jeu ou une carte...">
+                </div>
+
+            </header>
+
+            <section class="page-header">
+                <div class="header-text">
+                    <h1>Gestion des Jeux & Cartes</h1>
+                    <p>Ajoutez, modifiez ou supprimez vos produits.</p>
+                </div>
+                <button class="btn btn-primary" id="open-add-modal">
+                    <i class="fas fa-plus"></i> Ajouter un Produit
+                </button>
+            </section>
+
+            <div class="games-grid">
+                <!-- Example Game Card -->
+                <div class="game-card">
+                    <div class="game-image-placeholder">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="game-info">
+                        <h3>Elden Ring (PC)</h3>
+                        <div class="game-meta">
+                            <p><strong>Catégorie:</strong> RPG / Action</p>
+                            <p><strong>Type:</strong> Jeu Vidéo</p>
+                        </div>
+                        <p class="game-price">59.99€</p>
+                        <div class="game-buttons">
+                            <button class="btn btn-secondary edit-product">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                            <button class="btn btn-danger delete-product">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example Gift Card -->
+                <div class="game-card">
+                    <div class="game-image-placeholder"
+                        style="background: linear-gradient(135deg, #111 0%, #0070d1 100%);">
+                        <i class="fab fa-playstation"></i>
+                    </div>
+                    <div class="game-info">
+                        <h3>PlayStation Card 50€</h3>
+                        <div class="game-meta">
+                            <p><strong>Catégorie:</strong> Gift Card</p>
+                            <p><strong>Type:</strong> Carte Cadeau</p>
+                        </div>
+                        <p class="game-price">50.00€</p>
+                        <div class="game-buttons">
+                            <button class="btn btn-secondary edit-product">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                            <button class="btn btn-danger delete-product">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another Gift Card -->
+                <div class="game-card">
+                    <div class="game-image-placeholder"
+                        style="background: linear-gradient(135deg, #000 0%, #171a21 100%);">
+                        <i class="fab fa-steam"></i>
+                    </div>
+                    <div class="game-info">
+                        <h3>Steam Gift Card 20€</h3>
+                        <div class="game-meta">
+                            <p><strong>Catégorie:</strong> Gift Card</p>
+                            <p><strong>Type:</strong> Carte Cadeau</p>
+                        </div>
+                        <p class="game-price">20.00€</p>
+                        <div class="game-buttons">
+                            <button class="btn btn-secondary edit-product">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                            <button class="btn btn-danger delete-product">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Add/Edit -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modal-title">Ajouter un Produit</h2>
+                <button class="close-modal" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="modal-form" id="product-form">
+                <div class="form-group">
+                    <label for="product-name">Nom du Produit</label>
+                    <input type="text" id="product-name" placeholder="Ex: FIFA 25, Xbox Card 20€..." required>
+                </div>
+                <div class="form-group">
+                    <label for="product-type">Type</label>
+                    <select id="product-type" required>
+                        <option value="game">Jeu Vidéo</option>
+                        <option value="giftcard">Carte Cadeau</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-category">Catégorie</label>
+                    <input type="text" id="product-category" placeholder="Ex: Action, RPG, FPS..." required>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Prix (€)</label>
+                    <input type="number" id="product-price" step="0.01" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Image du Produit</label>
+                    <div class="image-upload-wrapper">
+                        <label for="product-image-file" class="file-upload-label">
+                            <i class="fas fa-upload"></i> Choisir un fichier
+                        </label>
+                        <input type="file" id="product-image-file" accept="image/*" class="hidden-input">
+                        <span class="upload-divider">ou</span>
+                        <input type="url" id="product-image-url" placeholder="URL de l'image">
+                    </div>
+                    <div id="image-preview-container" class="image-preview-container hidden">
+                        <img src="" alt="Preview" id="image-preview">
+                        <button type="button" id="remove-preview" class="btn-remove-preview">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary" id="save-product">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/admin.js"></script>
+    <script src="../assets/js/games.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Utilisateurs - GameStore</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GameDash</span>
+                </div>
+                <button id="toggle-sidebar" class="toggle-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="admin.html">
+                            <i class="fas fa-th-large"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="users.html">
+                            <i class="fas fa-users"></i>
+                            <span>Utilisateurs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Games.html">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Jeux & Cartes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Orders.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Commandes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="login.html" class="logout-link"
+                    onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-users" placeholder="Rechercher un utilisateur...">
+                </div>
+            </header>
+
+            <section class="page-header">
+                <div class="header-text">
+                    <h1>Gestion des Utilisateurs</h1>
+                    <p>Visualisez et gérez les comptes de votre plateforme.</p>
+                </div>
+            </section>
+
+            <section class="recent-activity">
+                <div class="table-container">
+                    <table id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Profil</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-body">
+                            <!-- User Row 1 -->
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Mohamed+A&background=random"
+                                            alt="Avatar" class="avatar">
+                                        <span>Mohamed A.</span>
+                                    </div>
+                                </td>
+                                <td>mohamed.a@example.com</td>
+                                <td><span class="status-badge complete">Utilisateur</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary btn-sm promote-admin" title="Rendre Admin">
+                                            <i class="fas fa-user-shield"></i> Promote
+                                        </button>
+                                        <button class="btn btn-danger btn-sm delete-user" title="Supprimer">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- User Row 2 -->
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Sarah+K&background=random"
+                                            alt="Avatar" class="avatar">
+                                        <span>Sarah K.</span>
+                                    </div>
+                                </td>
+                                <td>sarah.k@example.com</td>
+                                <td><span class="status-badge pending">Administrateur</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-secondary btn-sm demote-admin"
+                                            title="Rendre Utilisateur">
+                                            <i class="fas fa-user-minus"></i> Demote
+                                        </button>
+                                        <button class="btn btn-danger btn-sm delete-user" title="Supprimer">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- User Row 3 -->
+                            <tr>
+                                <td>
+                                    <div class="user-info">
+                                        <img src="https://ui-avatars.com/api/?name=Yassine+B&background=random"
+                                            alt="Avatar" class="avatar">
+                                        <span>Yassine B.</span>
+                                    </div>
+                                </td>
+                                <td>yassine.b@example.com</td>
+                                <td><span class="status-badge complete">Utilisateur</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary btn-sm promote-admin" title="Rendre Admin">
+                                            <i class="fas fa-user-shield"></i> Promote
+                                        </button>
+                                        <button class="btn btn-danger btn-sm delete-user" title="Supprimer">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/admin.js"></script>
+    <script src="../assets/js/users.js"></script>
+</body>
+
+</html>
