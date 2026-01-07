@@ -22,12 +22,11 @@ async function fetchGames() {
 
 const state = {
     cart: JSON.parse(localStorage.getItem('cart')) || [],
-    wishlist: JSON.parse(localStorage.getItem('wishlist')) || [],
     filters: {
         text: '',
         category: 'all',
         platform: 'all',
-        maxPrice: 100,
+        maxPrice: 1000,
         sortBy: 'default'
     },
     currentModalGame: null
@@ -36,7 +35,6 @@ const state = {
 // --- DOM Elements ---
 const gamesGrid = document.getElementById('games-grid');
 const cartCount = document.getElementById('cart-count');
-const wishlistCount = document.getElementById('wishlist-count');
 const cartItemsContainer = document.getElementById('cart-items');
 const cartTotalPrice = document.getElementById('cart-total-price');
 const modal = document.getElementById('game-modal');
@@ -131,7 +129,6 @@ function displayGames() {
     });
 }
 function createGameCard(game, delay = 0) {
-    const isWishlisted = state.wishlist.some(g => g.id === game.id);
     const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
 
     return `
@@ -167,9 +164,6 @@ function createGameCard(game, delay = 0) {
                         <button class="btn-icon" onclick="event.stopPropagation(); addToCart(${game.id})" title="Ajouter au panier">
                             🛒
                         </button>
-                        <button class="btn-icon btn-heart ${isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist(${game.id})" title="Ajouter aux favoris">
-                            ❤️
-                        </button>
                     </div>
                 </div>
             </div>
@@ -179,9 +173,7 @@ function createGameCard(game, delay = 0) {
 function updateCartCount() {
     if (cartCount) cartCount.textContent = state.cart.length;
 }
-function updateWishlistCount() {
-    if (wishlistCount) wishlistCount.textContent = state.wishlist.length; // Corrected ID usage
-}
+// Update Wishlist function removed
 function addToCart(gameId) {
     const game = games.find(g => g.id === gameId);
     if (!game) return;
@@ -196,33 +188,26 @@ function addToCart(gameId) {
         toggleCart();
     }
 }
-function toggleWishlist(gameId) {
-    const game = games.find(g => g.id === gameId);
-    if (!game) return;
-    const index = state.wishlist.findIndex(g => g.id === gameId);
-    const heartBtn = event.target;
-    if (index === -1) {
-        state.wishlist.push(game);
-        heartBtn.style.color = '#ef4444';
-        showNotification(`Ajouté aux favoris: ${game.title}`, 'success');
-    } else {
-        state.wishlist.splice(index, 1);
-        heartBtn.style.color = '';
-        showNotification(`Retiré des favoris: ${game.title}`, 'info');
-    }
-    localStorage.setItem('wishlist', JSON.stringify(state.wishlist));
-    updateWishlistCount();
-}
+// Toggle Wishlist function removed
 function toggleCart() {
     const sidebar = document.getElementById('cart-sidebar');
     const overlay = document.getElementById('cart-overlay');
     sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
     renderCartIems();
 }
-function toggleWishlistSidebar() {
-    showNotification("Fonctionnalité Liste de Souhaits complète à venir !", "info");
+function toggleProfileMenu() {
+    const dropdown = document.getElementById('profile-dropdown');
+    dropdown.classList.toggle('active');
+
+    // Close on click outside
+    document.addEventListener('click', function closeMenu(e) {
+        if (!e.target.closest('.profile-dropdown-container')) {
+            dropdown.classList.remove('active');
+            document.removeEventListener('click', closeMenu);
+        }
+    });
 }
+// Toggle Wishlist Sidebar function removed
 
 
 function renderCartIems() {
@@ -351,11 +336,8 @@ function openImmersiveDetail(gameId) {
                             ${game.originalPrice ? `<span class="original-price" style="font-size:1.2rem">${game.originalPrice} €</span>` : ''}
                         </div>
                         <div class="detail-actions">
-                            <button class="btn btn-primary btn-large" onclick="addToCart(${game.id}); closeImmersiveDetail()">
-                                🛒 Ajouter au panier
-                            </button>
-                            <button class="btn btn-secondary btn-icon" onclick="toggleWishlist(${game.id})">
-                                ❤️
+                            <button class="btn btn-primary btn-large" onclick="addToCart(${game.id}); closeModal()">
+                                Ajouter au panier - ${game.price} €
                             </button>
                         </div>
                     </div>
@@ -600,6 +582,37 @@ function initHeroCarousel() {
     setInterval(nextSlide, 5000);
 }
 
+function handleContact(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const originalText = btn.textContent;
+    btn.textContent = 'Envoi en cours...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        showNotification('Message envoyé avec succès !', 'success');
+        e.target.reset();
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }, 1500);
+}
+
+function handleSpecialOffer(gameTitle, action) {
+    // Find game by title (fuzzy match to be safe)
+    const game = games.find(g => g.title.toLowerCase().includes(gameTitle.toLowerCase()) || gameTitle.toLowerCase().includes(g.title.toLowerCase()));
+
+    if (!game) {
+        showNotification(`Désolé, ${gameTitle} n'est pas disponible pour le moment.`, 'error');
+        return;
+    }
+
+    if (action === 'buy') {
+        addToCart(game.id);
+    } else if (action === 'view') {
+        openModal(game.id);
+    }
+}
+
 function goToSlide(index) {
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.indicator');
@@ -618,47 +631,14 @@ function nextSlide() {
     goToSlide(next);
 }
 
-function initCountdown() {
-    const countdownElement = document.getElementById('countdown');
-    if (!countdownElement) return;
 
-    // Set end date (2 days from now)
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + 2);
-
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = endDate.getTime() - now;
-
-        if (distance < 0) {
-            // Timer expired
-            document.getElementById('days').textContent = '00';
-            document.getElementById('hours').textContent = '00';
-            document.getElementById('minutes').textContent = '00';
-            document.getElementById('seconds').textContent = '00';
-            return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-}
 document.addEventListener('DOMContentLoaded', () => {
     initFilters();
     fetchGames();
     updateCartCount();
-    updateWishlistCount();
-    initCountdown();
+    updateCartCount();
+    // updateWishlistCount();
+
     initHeroCarousel();
     initParticles();
     initThemeToggle();
