@@ -91,11 +91,17 @@
                 <div class="game-card" data-id="<?php echo $item['id']; ?>">
                     <div class="game-photo-container">
                         <?php if (!empty($item['photo'])): ?>
-                        <img src="<?php echo $item['photo']; ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"
-                            class="game-photo">
+                        <img src="<?php echo htmlspecialchars($item['photo']); ?>"
+                            alt="<?php echo htmlspecialchars($item['name']); ?>" class="game-photo">
                         <?php else: ?>
                         <div class="game-photo-placeholder">
                             <i class="<?php echo $item['type'] === 'game' ? 'fas fa-gamepad' : 'fas fa-gift'; ?>"></i>
+                        </div>
+                        <?php endif; ?>
+
+                        <?php if ($item['is_special_offer']): ?>
+                        <div class="offer-badge">-
+                            <?php echo $item['discount_percentage']; ?>%
                         </div>
                         <?php endif; ?>
                     </div>
@@ -110,11 +116,6 @@
                             <p><strong>Type:</strong>
                                 <?php echo $item['type'] === 'game' ? 'Jeu Vidéo' : 'Carte Cadeau'; ?>
                             </p>
-                            <?php if ($item['is_special_offer']): ?>
-                            <div class="offer-badge">-
-                                <?php echo $item['discount_percentage']; ?>%
-                            </div>
-                            <?php endif; ?>
                         </div>
                         <p class="game-price">
                             <?php if ($item['is_special_offer']): ?>
@@ -174,6 +175,7 @@
                         <option value="Stratégie">Stratégie</option>
                         <option value="Course">Course</option>
                         <option value="Sport">Sport</option>
+                        <option value="Carte Cadeau">Carte Cadeau</option>
                     </select>
                 </div>
                 <div class="form-group">

@@ -253,6 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('is_special_offer', isSpecial);
             formData.append('discount_percentage', discount);
 
+            const photoFile = document.getElementById('product-photo-file').files[0];
+            if (photoFile) {
+                formData.append('photo_file', photoFile);
+            }
+
             fetch('items.php', {
                 method: 'POST',
                 body: formData
