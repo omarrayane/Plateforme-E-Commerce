@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS items (
     type ENUM('game', 'giftcard') NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     photo TEXT,
+    description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

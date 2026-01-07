@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         document.getElementById('product-name').value = name;
+        document.getElementById('product-description').value = card.querySelector('.game-description')?.textContent.trim() || '';
         document.getElementById('product-category').value = categoryText;
         document.getElementById('product-price').value = price;
 
@@ -233,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             const name = document.getElementById('product-name').value;
+            const description = document.getElementById('product-description').value;
             const type = document.getElementById('product-type').value;
             const category = document.getElementById('product-category').value;
             const price = document.getElementById('product-price').value;
@@ -250,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('category', category);
             formData.append('price', price);
             formData.append('photo', photo);
+            formData.append('description', description);
             formData.append('is_special_offer', isSpecial);
             formData.append('discount_percentage', discount);
 

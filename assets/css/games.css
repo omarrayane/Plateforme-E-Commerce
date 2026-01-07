@@ -67,6 +67,28 @@
     margin-bottom: 5px;
 }
 
+.game-description {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: rgba(13, 110, 253, 0.05);
+    border-left: 3px solid var(--primary-blue);
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: var(--transition);
+}
+
+.game-description:hover {
+    background: rgba(13, 110, 253, 0.08);
+}
+
 .game-price {
     font-size: 1.25rem;
     font-weight: 700;
@@ -213,7 +235,8 @@
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     background: var(--bg-card);
     border: 1px solid var(--glass-border);
     padding: 12px;
@@ -221,10 +244,18 @@
     color: var(--text-main);
     outline: none;
     transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: var(--primary-blue);
     box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
 }

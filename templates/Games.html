@@ -117,6 +117,11 @@
                                 <?php echo $item['type'] === 'game' ? 'Jeu Vidéo' : 'Carte Cadeau'; ?>
                             </p>
                         </div>
+                        <?php if (!empty($item['description'])): ?>
+                        <div class="game-description">
+                            <?php echo nl2br(htmlspecialchars($item['description'])); ?>
+                        </div>
+                        <?php endif; ?>
                         <p class="game-price">
                             <?php if ($item['is_special_offer']): ?>
                             <span class="old-price">
@@ -157,6 +162,10 @@
                 <div class="form-group">
                     <label for="product-name">Nom du Produit</label>
                     <input type="text" id="product-name" placeholder="Ex: FIFA 25, Xbox Card 20€..." required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="3" placeholder="Description du produit..."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="product-type">Type</label>
