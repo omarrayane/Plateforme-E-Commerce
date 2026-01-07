@@ -564,17 +564,17 @@ function initTiltEffect() {
 }
 const heroSlides = [
     {
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+        photo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
         title: "Le Gaming Réinventé",
         text: "Découvrez une nouvelle ère de jeu."
     },
     {
-        image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
+        photo: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
         title: "Immersion Totale",
         text: "Plongez dans des mondes infinis."
     },
     {
-        image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2065&auto=format&fit=crop",
+        photo: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2065&auto=format&fit=crop",
         title: "Performance Ultime",
         text: "Jouez sans limites."
     }
@@ -589,7 +589,7 @@ function initHeroCarousel() {
     if (!container || !indicators) return;
 
     container.innerHTML = heroSlides.map((slide, index) => `
-        <div class="hero-slide ${index === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${slide.image}')"></div>
+        <div class="hero-slide ${index === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${slide.photo}')"></div>
     `).join('');
 
     indicators.innerHTML = heroSlides.map((_, index) => `
@@ -665,6 +665,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearchAutocomplete();
     initShortcuts();
     initScrollAnimations();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.querySelector('nav ul');
+
+    if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking links
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes floatParticle {

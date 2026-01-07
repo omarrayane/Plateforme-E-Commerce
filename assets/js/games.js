@@ -30,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fillFormFromCard = (card) => {
         const id = card.dataset.id;
+<<<<<<< HEAD
         const name = card.querySelector('h3').textContent.trim();
+=======
+        const name = card.querySelector('h3').textContent;
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
         const categoryText = card.querySelector('.game-meta p:nth-child(1)').textContent.replace('Catégorie:', '').trim();
         const typeText = card.querySelector('.game-meta p:nth-child(2)').textContent.replace('Type:', '').trim();
 
@@ -55,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeText === 'Jeu Vidéo' || typeText === 'game') typeSelect.value = 'game';
         else if (typeText === 'Carte Cadeau' || typeText === 'giftcard') typeSelect.value = 'giftcard';
 
+<<<<<<< HEAD
         // Set special offer fields
         const specialCheckbox = document.getElementById('product-special');
         const discountWrapper = document.getElementById('discount-wrapper');
@@ -73,6 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (photoImg) {
             handlePhotoPreview(photoImg.src);
             document.getElementById('product-photo').value = photoImg.src;
+=======
+        const photoPlaceholder = card.querySelector('.game-photo-placeholder');
+        if (photoPlaceholder.style.backgroundImage) {
+            const url = photoPlaceholder.style.backgroundImage.replace(/url\(["']?|["']?\)/g, '');
+            handlePhotoPreview(url);
+            document.getElementById('product-photo').value = url;
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
         }
     };
 
@@ -188,15 +200,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (deleteBtn) {
                 const card = deleteBtn.closest('.game-card');
                 const id = card.dataset.id;
+<<<<<<< HEAD
                 const name = card.querySelector('h3').textContent.trim();
 
                 console.log('Attempting to delete item:', id, name);
 
+=======
+                const name = card.querySelector('h3').textContent;
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                 if (confirm(`Êtes-vous sûr de vouloir supprimer "${name}" ?`)) {
                     const formData = new FormData();
                     formData.append('action', 'delete');
                     formData.append('id', id);
 
+<<<<<<< HEAD
                     fetch('items.php', { // Relative to root dashboard
                         method: 'POST',
                         body: formData
@@ -217,6 +234,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         .catch(err => {
                             console.error('Fetch error:', err);
                             alert('Une erreur est survenue lors de la suppression.');
+=======
+                    fetch('items.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                card.remove();
+                            } else {
+                                alert('Erreur: ' + data.message);
+                            }
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                         });
                 }
             }
@@ -237,8 +267,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const category = document.getElementById('product-category').value;
             const price = document.getElementById('product-price').value;
             const photo = document.getElementById('product-photo').value;
+<<<<<<< HEAD
             const isSpecial = document.getElementById('product-special').checked ? 1 : 0;
             const discount = document.getElementById('product-discount').value || 0;
+=======
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
 
             const formData = new FormData();
             formData.append('action', currentMode);
@@ -249,9 +282,13 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('type', type);
             formData.append('category', category);
             formData.append('price', price);
+<<<<<<< HEAD
             formData.append('photo', photo);
             formData.append('is_special_offer', isSpecial);
             formData.append('discount_percentage', discount);
+=======
+            formData.append('photo', photo); // Updated to photo
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
 
             fetch('items.php', {
                 method: 'POST',

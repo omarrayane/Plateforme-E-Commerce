@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 require_once 'php/session.php';
 
 if (!check_login($conn) || $_SESSION['user_role'] !== 'admin') {
@@ -39,3 +40,8 @@ if ($res) {
 
 include 'templates/admin.html';
 ?>
+=======
+header("Location: php/admin.php");
+exit();
+?>
+>>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
