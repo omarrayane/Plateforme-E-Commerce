@@ -1,7 +1,7 @@
 <?php
 require_once 'session.php';
-clear_cookies();
 session_destroy();
+clear_cookies();
 header("Location: login.php");
 exit();
 ?>

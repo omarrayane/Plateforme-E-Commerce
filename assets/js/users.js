@@ -26,56 +26,80 @@ document.addEventListener('DOMContentLoaded', () => {
         usersTable.addEventListener('click', (e) => {
             const deleteBtn = e.target.closest('.delete-user');
             const promoteBtn = e.target.closest('.promote-admin');
+            const demoteBtn = e.target.closest('.demote-admin');
 
             if (deleteBtn) {
                 const row = deleteBtn.closest('tr');
+                const id = row.dataset.id;
                 const name = row.querySelector('.user-info span').textContent;
-                const email = row.querySelector('td:nth-child(2)').textContent;
 
-                if (confirm(`Êtes-vous sûr de vouloir supprimer le compte de ${name} (${email}) ?`)) {
-                    row.remove();
+                if (confirm(`Êtes-vous sûr de vouloir supprimer le compte de ${name} ?`)) {
+                    const formData = new FormData();
+                    formData.append('action', 'delete');
+                    formData.append('id', id);
+
+                    fetch('users.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                row.remove();
+                            } else {
+                                alert('Erreur: ' + data.message);
+                            }
+                        });
                 }
             }
 
             if (promoteBtn) {
                 const row = promoteBtn.closest('tr');
+                const id = row.dataset.id;
                 const name = row.querySelector('.user-info span').textContent;
-                const roleBadge = row.querySelector('.status-badge');
-                const actionButtons = row.querySelector('.action-buttons');
 
                 if (confirm(`Promouvoir ${name} au rang d'Administrateur ?`)) {
-                    // Update Role Badge
-                    roleBadge.textContent = 'Administrateur';
-                    roleBadge.classList.remove('complete');
-                    roleBadge.classList.add('pending');
+                    const formData = new FormData();
+                    formData.append('action', 'promote');
+                    formData.append('id', id);
 
-                    // Replace Promote with Demote
-                    promoteBtn.outerHTML = `
-                        <button class="btn btn-secondary btn-sm demote-admin" title="Rendre Utilisateur">
-                            <i class="fas fa-user-minus"></i> Demote
-                        </button>
-                    `;
+                    fetch('users.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                alert('Erreur: ' + data.message);
+                            }
+                        });
                 }
             }
 
-            const demoteBtn = e.target.closest('.demote-admin');
             if (demoteBtn) {
                 const row = demoteBtn.closest('tr');
+                const id = row.dataset.id;
                 const name = row.querySelector('.user-info span').textContent;
-                const roleBadge = row.querySelector('.status-badge');
 
                 if (confirm(`Rétrograder ${name} au rang d'Utilisateur ?`)) {
-                    // Update Role Badge
-                    roleBadge.textContent = 'Utilisateur';
-                    roleBadge.classList.remove('pending');
-                    roleBadge.classList.add('complete');
+                    const formData = new FormData();
+                    formData.append('action', 'demote');
+                    formData.append('id', id);
 
-                    // Replace Demote with Promote
-                    demoteBtn.outerHTML = `
-                        <button class="btn btn-primary btn-sm promote-admin" title="Rendre Admin">
-                            <i class="fas fa-user-shield"></i> Promote
-                        </button>
-                    `;
+                    fetch('users.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                alert('Erreur: ' + data.message);
+                            }
+                        });
                 }
             }
         });

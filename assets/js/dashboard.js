@@ -1,150 +1,24 @@
 
-const games = [
-    {
-        id: 1,
-        title: "The Legend of Zelda: Breath of the Wild",
-        description: "Explorez un monde ouvert immense dans cette aventure épique de Nintendo. Une liberté totale vous attend.",
-        price: 59.99,
-        originalPrice: 79.99,
-        category: "Aventure",
-        platform: "Nintendo Switch",
-        rating: 4.9,
-        image: "https://upload.wikimedia.org/wikipedia/en/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg",
-        tags: ["Aventure", "Monde Ouvert", "Nintendo"]
-    },
-    {
-        id: 2,
-        title: "Cyberpunk 2077",
-        description: "Plongez dans un futur dystopique avec des choix qui impactent l'histoire. Night City n'attend que vous.",
-        price: 49.99,
-        originalPrice: 69.99,
-        category: "RPG",
-        platform: "PC",
-        rating: 4.5,
-        image: "https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg",
-        tags: ["RPG", "Cyberpunk", "Futuriste"]
-    },
-    {
-        id: 3,
-        title: "Elden Ring",
-        description: "Une aventure RPG d'action fantastique dans un monde créé par Hidetaka Miyazaki et George R.R. Martin.",
-        price: 59.99,
-        originalPrice: 69.99,
-        category: "RPG",
-        platform: "PlayStation",
-        rating: 4.8,
-        image: "https://upload.wikimedia.org/wikipedia/en/b/b9/Elden_Ring_Box_art.jpg",
-        tags: ["RPG", "Dark Fantasy", "Difficile"]
-    },
-    {
-        id: 4,
-        title: "Super Mario Odyssey",
-        description: "Rejoignez Mario dans une aventure en 3D massive et globe-trotter.",
-        price: 45.99,
-        originalPrice: 59.99,
-        category: "Plateforme",
-        platform: "Nintendo Switch",
-        rating: 4.7,
-        image: "https://upload.wikimedia.org/wikipedia/en/8/8d/Super_Mario_Odyssey.jpg",
-        tags: ["Plateforme", "Familial", "Nintendo"]
-    },
-    {
-        id: 5,
-        title: "God of War Ragnarök",
-        description: "Kratos et Atreus doivent s'aventurer dans chacun des neuf royaumes.",
-        price: 69.99,
-        originalPrice: 79.99,
-        category: "Action",
-        platform: "PlayStation",
-        rating: 4.9,
-        image: "https://upload.wikimedia.org/wikipedia/en/e/ee/God_of_War_Ragnar%C3%B6k_cover.jpg",
-        tags: ["Action", "Mythologie", "Story-Rich"]
-    },
-    {
-        id: 6,
-        title: "Red Dead Redemption 2",
-        description: "Une histoire épique de hors-la-loi au cœur de l'Amérique impitoyable.",
-        price: 19.99,
-        originalPrice: 59.99,
-        category: "Aventure",
-        platform: "Xbox",
-        rating: 4.9,
-        image: "https://upload.wikimedia.org/wikipedia/en/4/44/Red_Dead_Redemption_II.jpg",
-        tags: ["Western", "Monde Ouvert", "Action"]
-    },
-    {
-        id: 7,
-        title: "FIFA 24",
-        description: "Le jeu du monde entier. La simulation de football la plus réaliste.",
-        price: 69.99,
-        originalPrice: null,
-        category: "Sport",
-        platform: "Multi-plateforme",
-        rating: 4.0,
-        image: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/EA_Sports_FC_24_cover.jpg/220px-EA_Sports_FC_24_cover.jpg",
-        tags: ["Sport", "Football", "Compétitif"]
-    },
-    {
-        id: 8,
-        title: "The Witcher 3: Wild Hunt",
-        description: "Vous êtes Geralt de Riv, tueur de monstres à gages.",
-        price: 29.99,
-        originalPrice: 39.99,
-        category: "RPG",
-        platform: "PC",
-        rating: 4.8,
-        image: "https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg",
-        tags: ["RPG", "Fantasy", "Mature"]
-    },
-    {
-        id: 9,
-        title: "Minecraft",
-        description: "Préparez-vous pour une aventure aux possibilités illimitées.",
-        price: 19.99,
-        originalPrice: 29.99,
-        category: "Simulation",
-        platform: "Multi-plateforme",
-        rating: 4.6,
-        image: "https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png",
-        tags: ["Créatif", "Survie", "Sandbox"]
-    },
-    {
-        id: 10,
-        title: "Mario Kart 8 Deluxe",
-        description: "Faites la course avec vos amis ou affrontez-les dans un mode bataille revu.",
-        price: 49.99,
-        originalPrice: 59.99,
-        category: "Course",
-        platform: "Nintendo Switch",
-        rating: 4.8,
-        image: "https://upload.wikimedia.org/wikipedia/en/b/b5/MarioKart8Boxart.jpg",
-        tags: ["Course", "Multijoueur", "Fun"]
-    },
-    {
-        id: 11,
-        title: "Starfield",
-        description: "Dans ce RPG nouvelle génération, créez le personnage de vos rêves et explorez l'espace.",
-        price: 69.99,
-        originalPrice: null,
-        category: "RPG",
-        platform: "Xbox",
-        rating: 4.2,
-        image: "https://upload.wikimedia.org/wikipedia/en/6/6d/Starfield_cover_art.jpg",
-        tags: ["Espace", "RPG", "Exploration"]
-    },
-    {
-        id: 12,
-        title: "Among Us",
-        description: "Un jeu de travail d'équipe et de trahison dans l'espace !",
-        price: 3.99,
-        originalPrice: 4.99,
-        category: "Party",
-        platform: "Multi-plateforme",
-        rating: 4.4,
-        image: "https://upload.wikimedia.org/wikipedia/en/9/9a/Among_Us_cover_art.jpg",
-        tags: ["Multijoueur", "Stratégie", "Fun"]
+let games = [];
+
+async function fetchGames() {
+    const formData = new FormData();
+    formData.append('action', 'get_items');
+
+    try {
+        const response = await fetch('index.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        if (data.success) {
+            games = data.items;
+            displayGames();
+        }
+    } catch (error) {
+        console.error('Error fetching games:', error);
     }
-];
+}
 
 const state = {
     cart: JSON.parse(localStorage.getItem('cart')) || [],
@@ -166,7 +40,7 @@ const wishlistCount = document.getElementById('wishlist-count');
 const cartItemsContainer = document.getElementById('cart-items');
 const cartTotalPrice = document.getElementById('cart-total-price');
 const modal = document.getElementById('game-modal');
-const categoryPills = document.getElementById('category-pills'); 
+const categoryPills = document.getElementById('category-pills');
 const platformSelect = document.getElementById('platform-select');
 const sortSelect = document.getElementById('sort-select');
 const searchInput = document.getElementById('search-input');
@@ -235,7 +109,7 @@ function filterGames() {
             filtered.sort((a, b) => b.rating - a.rating);
             break;
         case 'newest':
-            filtered.sort((a, b) => b.id - a.id); 
+            filtered.sort((a, b) => b.id - a.id);
             break;
         default:
             break;
@@ -262,11 +136,11 @@ function createGameCard(game, delay = 0) {
 
     return `
         <div class="game-card" data-id="${game.id}" style="animation: bounceIn 0.5s ease backwards ${delay}ms;">
-            <div class="card-image-wrapper">
+            <div class="card-photo-wrapper">
                 <span class="card-badge">${game.category}</span>
                 <span class="platform-badge">${game.platform}</span>
                 ${discount > 0 ? `<span class="card-badge discount" style="background: var(--danger); top: 3.5rem;">-${discount}%</span>` : ''}
-                <img src="${game.image}" alt="${game.title}" loading="lazy">
+                <img src="${game.photo}" alt="${game.title}" loading="lazy">
                 <div class="hover-overlay">
                     <button class="btn btn-primary btn-view" onclick="openModal(${game.id})">Voir détails</button>
                     <button class="btn btn-secondary btn-quick-add" onclick="event.stopPropagation(); addToCart(${game.id})">
@@ -364,7 +238,7 @@ function renderCartIems() {
             total += item.price;
             cartItemsContainer.innerHTML += `
                 <div class="cart-item">
-                    <img src="${item.image}" alt="${item.title}">
+                    <img src="${item.photo}" alt="${item.title}">
                     <div class="cart-item-info">
                         <div class="cart-item-title">${item.title}</div>
                         <div class="cart-item-price">${item.price} €</div>
@@ -390,12 +264,28 @@ function checkout() {
         showNotification("Votre panier est vide !", "warning");
         return;
     }
-    alert("Merci pour votre commande ! (Simulation)");
-    state.cart = [];
-    updateCartCount();
-    renderCartIems();
-    localStorage.setItem('cart', JSON.stringify(state.cart));
-    toggleCart();
+
+    const formData = new FormData();
+    formData.append('action', 'checkout');
+    formData.append('cart', JSON.stringify(state.cart));
+
+    fetch('index.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification("Merci pour votre commande ! Votre commande a été enregistrée.", "success");
+                state.cart = [];
+                updateCartCount();
+                renderCartIems();
+                localStorage.setItem('cart', JSON.stringify(state.cart));
+                toggleCart();
+            } else {
+                showNotification("Erreur lors de la commande: " + data.message, "danger");
+            }
+        });
 }
 function showNotification(msg, type = 'success') {
     const notif = document.createElement('div');
@@ -433,7 +323,7 @@ function openImmersiveDetail(gameId) {
     const detailContainer = document.getElementById('product-detail');
     const bg = document.getElementById('immersive-bg');
     if (bg) {
-        bg.style.backgroundImage = `url('${game.image}')`;
+        bg.style.backgroundImage = `url('${game.photo}')`;
         bg.classList.add('active');
         bg.style.filter = 'blur(8px) brightness(0.4)';
     }
@@ -442,8 +332,8 @@ function openImmersiveDetail(gameId) {
         <div class="product-detail-overlay" id="detail-overlay">
             <button class="close-detail" onclick="closeImmersiveDetail()">×</button>
             <div class="product-detail-content">
-                <div class="detail-image-col">
-                    <img src="${game.image}" alt="${game.title}">
+                <div class="detail-photo-col">
+                    <img src="${game.photo}" alt="${game.title}">
                 </div>
                 <div class="detail-info-col">
                     <div class="detail-meta">
@@ -628,7 +518,7 @@ function initSearchAutocomplete() {
         if (matches.length > 0) {
             suggestions.innerHTML = matches.map(m => `
                 <div class="search-suggestion-item" onclick="openImmersiveDetail(${m.id})">
-                    <img src="${m.image}" class="suggestion-image" alt="">
+                    <img src="${m.photo}" class="suggestion-photo" alt="">
                     <div class="suggestion-info">
                         <h4>${m.title}</h4>
                         <p>${m.category} • ${m.price} €</p>
@@ -674,17 +564,17 @@ function initTiltEffect() {
 }
 const heroSlides = [
     {
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+        photo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
         title: "Le Gaming Réinventé",
         text: "Découvrez une nouvelle ère de jeu."
     },
     {
-        image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
+        photo: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
         title: "Immersion Totale",
         text: "Plongez dans des mondes infinis."
     },
     {
-        image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2065&auto=format&fit=crop",
+        photo: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2065&auto=format&fit=crop",
         title: "Performance Ultime",
         text: "Jouez sans limites."
     }
@@ -699,7 +589,7 @@ function initHeroCarousel() {
     if (!container || !indicators) return;
 
     container.innerHTML = heroSlides.map((slide, index) => `
-        <div class="hero-slide ${index === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${slide.image}')"></div>
+        <div class="hero-slide ${index === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${slide.photo}')"></div>
     `).join('');
 
     indicators.innerHTML = heroSlides.map((_, index) => `
@@ -765,7 +655,7 @@ function initCountdown() {
 }
 document.addEventListener('DOMContentLoaded', () => {
     initFilters();
-    displayGames();
+    fetchGames();
     updateCartCount();
     updateWishlistCount();
     initCountdown();
@@ -775,6 +665,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initSearchAutocomplete();
     initShortcuts();
     initScrollAnimations();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.querySelector('nav ul');
+
+    if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking links
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes floatParticle {

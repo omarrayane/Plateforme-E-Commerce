@@ -30,25 +30,25 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-                        <a href="admin.html">
+                        <a href="../admin.php">
                             <i class="fas fa-th-large"></i>
                             <span>Tableau de bord</span>
                         </a>
                     </li>
                     <li>
-                        <a href="users.html">
+                        <a href="../users.php">
                             <i class="fas fa-users"></i>
                             <span>Utilisateurs</span>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="Games.html">
+                        <a href="../items.php">
                             <i class="fas fa-gamepad"></i>
                             <span>Jeux & Cartes</span>
                         </a>
                     </li>
                     <li>
-                        <a href="Orders.html">
+                        <a href="../cart.php">
                             <i class="fas fa-shopping-cart"></i>
                             <span>Commandes</span>
                         </a>
@@ -58,7 +58,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a href="login.html" class="logout-link"
+                <a href="../logout.php" class="logout-link"
                     onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
@@ -87,18 +87,31 @@
             </section>
 
             <div class="games-grid">
-                <!-- Example Game Card -->
-                <div class="game-card">
-                    <div class="game-image-placeholder">
-                        <i class="fas fa-gamepad"></i>
+                <?php foreach ($items as $item): ?>
+                <div class="game-card" data-id="<?php echo $item['id']; ?>">
+                    <div class="game-photo-placeholder" <?php if (!empty($item['photo'])): ?>style="background-image:
+                        url('
+                        <?php echo $item['photo']; ?>'); background-size: cover; background-position: center;"
+                        <?php endif; ?>>
+                        <?php if (empty($item['photo'])): ?>
+                        <i class="<?php echo $item['type'] === 'game' ? 'fas fa-gamepad' : 'fas fa-gift'; ?>"></i>
+                        <?php endif; ?>
                     </div>
                     <div class="game-info">
-                        <h3>Elden Ring (PC)</h3>
+                        <h3>
+                            <?php echo htmlspecialchars($item['name']); ?>
+                        </h3>
                         <div class="game-meta">
-                            <p><strong>Catégorie:</strong> RPG / Action</p>
-                            <p><strong>Type:</strong> Jeu Vidéo</p>
+                            <p><strong>Catégorie:</strong>
+                                <?php echo htmlspecialchars($item['category']); ?>
+                            </p>
+                            <p><strong>Type:</strong>
+                                <?php echo $item['type'] === 'game' ? 'Jeu Vidéo' : 'Carte Cadeau'; ?>
+                            </p>
                         </div>
-                        <p class="game-price">59.99€</p>
+                        <p class="game-price">
+                            <?php echo number_format($item['price'], 2); ?>€
+                        </p>
                         <div class="game-buttons">
                             <button class="btn btn-secondary edit-product">
                                 <i class="fas fa-edit"></i> Modifier
@@ -109,54 +122,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Example Gift Card -->
-                <div class="game-card">
-                    <div class="game-image-placeholder"
-                        style="background: linear-gradient(135deg, #111 0%, #0070d1 100%);">
-                        <i class="fab fa-playstation"></i>
-                    </div>
-                    <div class="game-info">
-                        <h3>PlayStation Card 50€</h3>
-                        <div class="game-meta">
-                            <p><strong>Catégorie:</strong> Gift Card</p>
-                            <p><strong>Type:</strong> Carte Cadeau</p>
-                        </div>
-                        <p class="game-price">50.00€</p>
-                        <div class="game-buttons">
-                            <button class="btn btn-secondary edit-product">
-                                <i class="fas fa-edit"></i> Modifier
-                            </button>
-                            <button class="btn btn-danger delete-product">
-                                <i class="fas fa-trash"></i> Supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Another Gift Card -->
-                <div class="game-card">
-                    <div class="game-image-placeholder"
-                        style="background: linear-gradient(135deg, #000 0%, #171a21 100%);">
-                        <i class="fab fa-steam"></i>
-                    </div>
-                    <div class="game-info">
-                        <h3>Steam Gift Card 20€</h3>
-                        <div class="game-meta">
-                            <p><strong>Catégorie:</strong> Gift Card</p>
-                            <p><strong>Type:</strong> Carte Cadeau</p>
-                        </div>
-                        <p class="game-price">20.00€</p>
-                        <div class="game-buttons">
-                            <button class="btn btn-secondary edit-product">
-                                <i class="fas fa-edit"></i> Modifier
-                            </button>
-                            <button class="btn btn-danger delete-product">
-                                <i class="fas fa-trash"></i> Supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </main>
     </div>
@@ -191,17 +157,17 @@
                     <input type="number" id="product-price" step="0.01" placeholder="0.00" required>
                 </div>
                 <div class="form-group">
-                    <label>Image du Produit</label>
-                    <div class="image-upload-wrapper">
-                        <label for="product-image-file" class="file-upload-label">
+                    <label>Photo du Produit</label>
+                    <div class="photo-upload-wrapper">
+                        <label for="product-photo-file" class="file-upload-label">
                             <i class="fas fa-upload"></i> Choisir un fichier
                         </label>
-                        <input type="file" id="product-image-file" accept="image/*" class="hidden-input">
+                        <input type="file" id="product-photo-file" accept="image/*" class="hidden-input">
                         <span class="upload-divider">ou</span>
-                        <input type="url" id="product-image-url" placeholder="URL de l'image">
+                        <input type="url" id="product-photo" placeholder="URL de l'image">
                     </div>
-                    <div id="image-preview-container" class="image-preview-container hidden">
-                        <img src="" alt="Preview" id="image-preview">
+                    <div id="photo-preview-container" class="photo-preview-container hidden">
+                        <img src="" alt="Preview" id="photo-preview">
                         <button type="button" id="remove-preview" class="btn-remove-preview">
                             <i class="fas fa-times"></i>
                         </button>

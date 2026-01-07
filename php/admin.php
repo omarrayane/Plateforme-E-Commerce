@@ -6,5 +6,5 @@ if (!check_login($conn) || $_SESSION['user_role'] !== 'admin') {
     exit();
 }
 
-include '../templates/admin_view.html';
+include '../templates/admin.html';
 ?>
