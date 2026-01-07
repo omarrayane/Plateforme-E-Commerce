@@ -30,41 +30,25 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-<<<<<<< HEAD
                         <a href="admin.php">
-=======
-                        <a href="../admin.php">
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                             <i class="fas fa-th-large"></i>
                             <span>Tableau de bord</span>
                         </a>
                     </li>
                     <li>
-<<<<<<< HEAD
                         <a href="users.php">
-=======
-                        <a href="../users.php">
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                             <i class="fas fa-users"></i>
                             <span>Utilisateurs</span>
                         </a>
                     </li>
                     <li class="active">
-<<<<<<< HEAD
                         <a href="items.php">
-=======
-                        <a href="../items.php">
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                             <i class="fas fa-gamepad"></i>
                             <span>Jeux & Cartes</span>
                         </a>
                     </li>
                     <li>
-<<<<<<< HEAD
                         <a href="cart.php">
-=======
-                        <a href="../cart.php">
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                             <i class="fas fa-shopping-cart"></i>
                             <span>Commandes</span>
                         </a>
@@ -74,11 +58,7 @@
             </nav>
 
             <div class="sidebar-footer">
-<<<<<<< HEAD
                 <a href="logout.php" class="logout-link"
-=======
-                <a href="../logout.php" class="logout-link"
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                     onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
@@ -109,7 +89,6 @@
             <div class="games-grid">
                 <?php foreach ($items as $item): ?>
                 <div class="game-card" data-id="<?php echo $item['id']; ?>">
-<<<<<<< HEAD
                     <div class="game-photo-container">
                         <?php if (!empty($item['photo'])): ?>
                         <img src="<?php echo $item['photo']; ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"
@@ -118,23 +97,11 @@
                         <div class="game-photo-placeholder">
                             <i class="<?php echo $item['type'] === 'game' ? 'fas fa-gamepad' : 'fas fa-gift'; ?>"></i>
                         </div>
-=======
-                    <div class="game-photo-placeholder" <?php if (!empty($item['photo'])): ?>style="background-image:
-                        url('
-                        <?php echo $item['photo']; ?>'); background-size: cover; background-position: center;"
-                        <?php endif; ?>>
-                        <?php if (empty($item['photo'])): ?>
-                        <i class="<?php echo $item['type'] === 'game' ? 'fas fa-gamepad' : 'fas fa-gift'; ?>"></i>
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                         <?php endif; ?>
                     </div>
                     <div class="game-info">
                         <h3>
-<<<<<<< HEAD
                             <?php echo htmlspecialchars(trim($item['name'])); ?>
-=======
-                            <?php echo htmlspecialchars($item['name']); ?>
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                         </h3>
                         <div class="game-meta">
                             <p><strong>Catégorie:</strong>
@@ -143,7 +110,6 @@
                             <p><strong>Type:</strong>
                                 <?php echo $item['type'] === 'game' ? 'Jeu Vidéo' : 'Carte Cadeau'; ?>
                             </p>
-<<<<<<< HEAD
                             <?php if ($item['is_special_offer']): ?>
                             <div class="offer-badge">-
                                 <?php echo $item['discount_percentage']; ?>%
@@ -161,11 +127,6 @@
                             <?php else: ?>
                             <?php echo number_format($item['price'], 2); ?>€
                             <?php endif; ?>
-=======
-                        </div>
-                        <p class="game-price">
-                            <?php echo number_format($item['price'], 2); ?>€
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
                         </p>
                         <div class="game-buttons">
                             <button class="btn btn-secondary edit-product">

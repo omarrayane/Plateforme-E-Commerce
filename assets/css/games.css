@@ -22,11 +22,7 @@
     box-shadow: 0 10px 30px rgba(13, 110, 253, 0.2);
 }
 
-<<<<<<< HEAD
 .game-photo-container {
-=======
-.game-photo-placeholder {
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
     width: 100%;
     height: 180px;
     background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.2) 100%);

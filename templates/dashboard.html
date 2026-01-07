@@ -10,11 +10,7 @@
   <meta name="author" content="GameShop" />
   <meta name="robots" content="index, follow" />
   <title>GameShop - Premium Gaming Store</title>
-<<<<<<< HEAD
   <link rel="stylesheet" href="assets/css/dashboard.css?v=1.1" />
-=======
-  <link rel="stylesheet" href="../assets/css/dashboard.css" />
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
   <meta property="og:title" content="GameShop - Premium Gaming Store" />
   <meta property="og:description" content="Découvrez des milliers de jeux à prix réduit avec livraison instantanée." />
   <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/FFFFFF?text=GameShop" />
@@ -30,7 +26,6 @@
   <header>
     <div class="container">
       <a href="#" class="logo">GameShop<span style="color: var(--primary)">.</span></a>
-<<<<<<< HEAD
       <nav>
         <ul>
           <li><a href="#home" class="active">Accueil</a></li>
@@ -65,64 +60,6 @@
         <!-- Slides injectés par JS -->
       </div>
 
-=======
-      <div class="mobile-menu-btn" id="mobile-menu-btn">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <nav id="nav-menu">
-        <ul>
-          <li><a href="#home" class="active">Accueil</a></li>
-          <li><a href="#games">Catalogue</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Basculer le thème">
-              <span class="theme-icon">🌙</span>
-            </button>
-          </li>
-          <li>
-            <a href="#" onclick="event.preventDefault(); toggleCart()" class="cart-icon-nav" aria-label="Panier">
-              <span class="cart-icon">🛍️</span>
-              <span id="cart-count" class="cart-badge" aria-label="Nombre d'articles">0</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" onclick="event.preventDefault(); toggleWishlistSidebar()" class="cart-icon-nav"
-              aria-label="Favoris">
-              <span class="cart-icon">❤️</span>
-              <span id="wishlist-count" class="cart-badge" style="background: var(--danger)">0</span>
-            </a>
-          </li>
-          <li class="user-nav-item">
-            <?php if (isset($_SESSION['username'])): ?>
-            <div class="user-menu">
-              <span class="user-greeting">Salut, <strong>
-                  <?php echo htmlspecialchars($_SESSION['username']); ?>
-                </strong></span>
-              <div class="user-actions">
-                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                <a href="../admin.php" class="btn btn-secondary btn-sm">Admin</a>
-                <?php endif; ?>
-                <a href="../logout.php" class="btn btn-danger btn-sm">Quitter</a>
-              </div>
-            </div>
-            <?php else: ?>
-            <a href="../login.php" class="btn btn-primary">Connexion</a>
-            <?php endif; ?>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section id="home" class="hero">
-      <div id="hero-carousel" class="hero-carousel">
-        <!-- Slides injectés par JS -->
-      </div>
-
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
       <div class="hero-shapes">
         <div class="shape shape-1"></div>
         <div class="shape shape-2"></div>
@@ -529,11 +466,7 @@
   </div>
 
   <!-- Scripts -->
-<<<<<<< HEAD
   <script src="assets/js/dashboard.js?v=1.1"></script>
-=======
-  <script src="../assets/js/dashboard.js"></script>
->>>>>>> f5512bca0df29e9b94d8d2b70f5d595cd7c87ec5
 </body>
 
 </html>
