@@ -8,7 +8,8 @@ require_once __DIR__ . '/db.php';
 /**
  * Checks if a user is logged in via session or persistent cookie.
  */
-function check_login($conn) {
+function check_login($conn)
+{
     // 1. Check if session already exists
     if (isset($_SESSION['user_id'])) {
         return true;
@@ -17,7 +18,7 @@ function check_login($conn) {
     // 2. Check for persistent cookie ("Remember Me")
     if (isset($_COOKIE['remember_user'])) {
         $token = $_COOKIE['remember_user'];
-        
+
         $stmt = $conn->prepare("SELECT id, username, role FROM users WHERE username = ?");
         $stmt->bind_param("s", $token);
         $stmt->execute();
@@ -38,7 +39,8 @@ function check_login($conn) {
 /**
  * Sets a persistent cookie for "Remember Me".
  */
-function set_remember_cookie($username) {
+function set_remember_cookie($username)
+{
     // Set cookie for 30 days
     setcookie("remember_user", $username, time() + (86400 * 30), "/");
 }
@@ -46,9 +48,9 @@ function set_remember_cookie($username) {
 /**
  * Clears persistent cookies.
  */
-function clear_cookies() {
+function clear_cookies()
+{
     if (isset($_COOKIE['remember_user'])) {
         setcookie("remember_user", "", time() - 3600, "/");
     }
 }
-?>

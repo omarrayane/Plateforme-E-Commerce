@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=1.1">
 </head>
 
 <body>
@@ -29,35 +29,35 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li class="active">
-                        <a href="admin.html">
+                        <a href="admin.php">
                             <i class="fas fa-th-large"></i>
                             <span>Tableau de bord</span>
                         </a>
                     </li>
                     <li>
-                        <a href="users.html">
+                        <a href="users.php">
                             <i class="fas fa-users"></i>
                             <span>Utilisateurs</span>
                         </a>
                     </li>
                     <li>
-                        <a href="Games.html">
+                        <a href="items.php">
                             <i class="fas fa-gamepad"></i>
                             <span>Jeux & Cartes</span>
                         </a>
                     </li>
                     <li>
-                        <a href="Orders.html">
+                        <a href="cart.php">
                             <i class="fas fa-shopping-cart"></i>
                             <span>Commandes</span>
                         </a>
                     </li>
-       
+
                 </ul>
             </nav>
 
             <div class="sidebar-footer">
-                <a href="login.html" class="logout-link"
+                <a href="logout.php" class="logout-link"
                     onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
@@ -68,8 +68,8 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
-           
-        
+
+
             </header>
 
             <section class="dashboard-stats">
@@ -77,32 +77,30 @@
                     <div class="stat-icon users-icon"><i class="fas fa-users"></i></div>
                     <div class="stat-details">
                         <p class="stat-label">Utilisateurs</p>
-                        <h3 class="stat-value">1,250</h3>
-                        <p class="stat-trend positive"><i class="fas fa-arrow-up"></i> +12%</p>
+                        <h3 class="stat-value">
+                            <?php echo number_format($total_users); ?>
+                        </h3>
+                        <p class="stat-trend positive"><i class="fas fa-arrow-up"></i> Actif</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon games-icon"><i class="fas fa-gamepad"></i></div>
                     <div class="stat-details">
-                        <p class="stat-label">Jeux & Cartes</p>
-                        <h3 class="stat-value">482</h3>
-                        <p class="stat-trend"><i class="fas fa-minus"></i> Stable</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon sales-icon"><i class="fas fa-shopping-cart"></i></div>
-                    <div class="stat-details">
-                        <p class="stat-label">Ventes (Mois)</p>
-                        <h3 class="stat-value">15,420€</h3>
-                        <p class="stat-trend positive"><i class="fas fa-arrow-up"></i> +8%</p>
+                        <p class="stat-label">Nombre de Jeux</p>
+                        <h3 class="stat-value">
+                            <?php echo number_format($total_games); ?>
+                        </h3>
+                        <p class="stat-trend"><i class="fas fa-minus"></i> Catalogue</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon tickets-icon"><i class="fas fa-ticket-alt"></i></div>
                     <div class="stat-details">
-                        <p class="stat-label">Support</p>
-                        <h3 class="stat-value">12</h3>
-                        <p class="stat-trend negative"><i class="fas fa-arrow-down"></i> -5%</p>
+                        <p class="stat-label">Nombre de cartes cadeau</p>
+                        <h3 class="stat-value">
+                            <?php echo number_format($total_giftcards); ?>
+                        </h3>
+                        <p class="stat-trend positive"><i class="fas fa-arrow-up"></i> Dispos</p>
                     </div>
                 </div>
             </section>
@@ -110,7 +108,7 @@
             <section class="recent-activity">
                 <div class="section-header">
                     <h2>Commandes Récentes</h2>
-                    <a href="Orders.html" class="btn-link">Voir tout</a>
+                    <a href="cart.php" class="btn-link">Voir tout</a>
                 </div>
                 <div class="table-container">
                     <table>
@@ -125,30 +123,32 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php if (empty($recent_orders)): ?>
                             <tr>
-                                <td>Mohamed A.</td>
-                                <td>PlayStation Card 50€</td>
-                                <td>26 Dec 2025</td>
-                                <td>50.00€</td>
-                                <td><span class="status-badge complete">Complété</span></td>
+                                <td colspan="6" style="text-align: center;">Aucune commande récente</td>
+                            </tr>
+                            <?php else: ?>
+                            <?php foreach ($recent_orders as $order): ?>
+                            <tr>
+                                <td>
+                                    <?php echo htmlspecialchars($order['username']); ?>
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($order['product_name']); ?>
+                                </td>
+                                <td>
+                                    <?php echo date('d M Y', strtotime($order['created_at'])); ?>
+                                </td>
+                                <td>
+                                    <?php echo number_format($order['amount'], 2); ?>€
+                                </td>
+                                <td><span class="status-badge <?php echo $order['status']; ?>">
+                                        <?php echo ucfirst($order['status']); ?>
+                                    </span></td>
                                 <td><button class="btn-action"><i class="fas fa-eye"></i></button></td>
                             </tr>
-                            <tr>
-                                <td>Sarah K.</td>
-                                <td>Elden Ring (PC)</td>
-                                <td>25 Dec 2025</td>
-                                <td>59.99€</td>
-                                <td><span class="status-badge pending">En attente</span></td>
-                                <td><button class="btn-action"><i class="fas fa-eye"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>Yassine B.</td>
-                                <td>Steam Gift Card 20€</td>
-                                <td>25 Dec 2025</td>
-                                <td>20.00€</td>
-                                <td><span class="status-badge complete">Complété</span></td>
-                                <td><button class="btn-action"><i class="fas fa-eye"></i></button></td>
-                            </tr>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -157,7 +157,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="../assets/js/admin.js"></script>
+    <script src="assets/js/admin.js?v=1.1"></script>
 </body>
 
 </html>

@@ -29,43 +29,82 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const fillFormFromCard = (card) => {
-        const name = card.querySelector('h3').textContent;
+        const id = card.dataset.id;
+        const name = card.querySelector('h3').textContent.trim();
         const categoryText = card.querySelector('.game-meta p:nth-child(1)').textContent.replace('Catégorie:', '').trim();
         const typeText = card.querySelector('.game-meta p:nth-child(2)').textContent.replace('Type:', '').trim();
-        const price = card.querySelector('.game-price').textContent.replace('€', '').trim();
+
+        // Handle special offer data (could be stored in data attributes for reliability)
+        const offerBadge = card.querySelector('.offer-badge');
+        const isSpecial = !!offerBadge;
+        const discount = isSpecial ? offerBadge.textContent.replace('-', '').replace('%', '').trim() : '0';
+
+        const priceElement = card.querySelector('.game-price');
+        let price = '';
+        if (isSpecial) {
+            price = priceElement.querySelector('.old-price').textContent.replace('€', '').trim();
+        } else {
+            price = priceElement.textContent.replace('€', '').trim();
+        }
 
         document.getElementById('product-name').value = name;
         document.getElementById('product-category').value = categoryText;
         document.getElementById('product-price').value = price;
 
-        // Map type text back to values
         const typeSelect = document.getElementById('product-type');
-        if (typeText === 'Jeu Vidéo') typeSelect.value = 'game';
-        else if (typeText === 'Carte Cadeau') typeSelect.value = 'giftcard';
+        if (typeText === 'Jeu Vidéo' || typeText === 'game') typeSelect.value = 'game';
+        else if (typeText === 'Carte Cadeau' || typeText === 'giftcard') typeSelect.value = 'giftcard';
 
-        // Handling image preview on edit (optional but better)
-        const imagePlaceholder = card.querySelector('.game-image-placeholder');
-        if (imagePlaceholder.style.backgroundImage) {
-            const url = imagePlaceholder.style.backgroundImage.replace(/url\(["']?|["']?\)/g, '');
-            handleImagePreview(url);
-            document.getElementById('product-image-url').value = url;
+        // Set special offer fields
+        const specialCheckbox = document.getElementById('product-special');
+        const discountWrapper = document.getElementById('discount-wrapper');
+        const discountInput = document.getElementById('product-discount');
+
+        specialCheckbox.checked = isSpecial;
+        if (isSpecial) {
+            discountWrapper.classList.remove('hidden');
+            discountInput.value = discount;
+        } else {
+            discountWrapper.classList.add('hidden');
+            discountInput.value = '';
+        }
+
+        const photoImg = card.querySelector('.game-photo');
+        if (photoImg) {
+            handlePhotoPreview(photoImg.src);
+            document.getElementById('product-photo').value = photoImg.src;
         }
     };
+
+    // --- Special Offer Toggle Logic ---
+    const specialCheckbox = document.getElementById('product-special');
+    const discountWrapper = document.getElementById('discount-wrapper');
+
+    if (specialCheckbox) {
+        specialCheckbox.addEventListener('change', () => {
+            if (specialCheckbox.checked) {
+                discountWrapper.classList.remove('hidden');
+            } else {
+                discountWrapper.classList.add('hidden');
+            }
+        });
+    }
 
     const closeModal = () => {
         if (!productModal) return;
         productModal.classList.remove('active');
         currentEditCard = null;
+        if (discountWrapper) discountWrapper.classList.add('hidden');
     };
 
-    // --- Image Preview Logic ---
-    const imageFileInput = document.getElementById('product-image-file');
-    const imageUrlInput = document.getElementById('product-image-url');
-    const previewContainer = document.getElementById('image-preview-container');
-    const previewImg = document.getElementById('image-preview');
+    // --- Photo Preview Logic ---
+    const photoFileInput = document.getElementById('product-photo-file');
+    const photoInput = document.getElementById('product-photo');
+    const previewContainer = document.getElementById('photo-preview-container');
+    const previewImg = document.getElementById('photo-preview');
     const removePreviewBtn = document.getElementById('remove-preview');
 
-    const handleImagePreview = (src) => {
+    const handlePhotoPreview = (src) => {
         previewImg.src = src;
         previewContainer.classList.remove('hidden');
     };
@@ -73,29 +112,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetPreview = () => {
         previewImg.src = '';
         previewContainer.classList.add('hidden');
-        if (imageFileInput) imageFileInput.value = '';
-        if (imageUrlInput) imageUrlInput.value = '';
+        if (photoFileInput) photoFileInput.value = '';
+        if (photoInput) photoInput.value = '';
     };
 
-    if (imageFileInput) {
-        imageFileInput.addEventListener('change', (e) => {
+    if (photoFileInput) {
+        photoFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    handleImagePreview(event.target.result);
-                    if (imageUrlInput) imageUrlInput.value = '';
+                    handlePhotoPreview(event.target.result);
+                    if (photoInput) photoInput.value = '';
                 };
                 reader.readAsDataURL(file);
             }
         });
     }
 
-    if (imageUrlInput) {
-        imageUrlInput.addEventListener('input', (e) => {
+    if (photoInput) {
+        photoInput.addEventListener('input', (e) => {
             if (e.target.value.trim() !== '') {
-                handleImagePreview(e.target.value);
-                if (imageFileInput) imageFileInput.value = '';
+                handlePhotoPreview(e.target.value);
+                if (photoFileInput) photoFileInput.value = '';
             } else {
                 previewContainer.classList.add('hidden');
             }
@@ -148,9 +187,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (deleteBtn) {
                 const card = deleteBtn.closest('.game-card');
-                const name = card.querySelector('h3').textContent;
+                const id = card.dataset.id;
+                const name = card.querySelector('h3').textContent.trim();
+
+                console.log('Attempting to delete item:', id, name);
+
                 if (confirm(`Êtes-vous sûr de vouloir supprimer "${name}" ?`)) {
-                    card.remove();
+                    const formData = new FormData();
+                    formData.append('action', 'delete');
+                    formData.append('id', id);
+
+                    fetch('items.php', { // Relative to root dashboard
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Successfully deleted:', name);
+                                card.remove();
+                            } else {
+                                console.error('Deletion failed from server:', data.message);
+                                alert('Erreur: ' + data.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Fetch error:', err);
+                            alert('Une erreur est survenue lors de la suppression.');
+                        });
                 }
             }
 
@@ -169,77 +236,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const type = document.getElementById('product-type').value;
             const category = document.getElementById('product-category').value;
             const price = document.getElementById('product-price').value;
+            const photo = document.getElementById('product-photo').value;
+            const isSpecial = document.getElementById('product-special').checked ? 1 : 0;
+            const discount = document.getElementById('product-discount').value || 0;
 
-            // Image handling
-            let imageSource = '';
-            let isIcon = true;
-
-            const file = imageFileInput.files[0];
-            const url = imageUrlInput.value;
-
-            if (file) {
-                imageSource = previewImg.src;
-                isIcon = false;
-            } else if (url) {
-                imageSource = url;
-                isIcon = false;
+            const formData = new FormData();
+            formData.append('action', currentMode);
+            if (currentMode === 'edit' && currentEditCard) {
+                formData.append('id', currentEditCard.dataset.id);
             }
+            formData.append('name', name);
+            formData.append('type', type);
+            formData.append('category', category);
+            formData.append('price', price);
+            formData.append('photo', photo);
+            formData.append('is_special_offer', isSpecial);
+            formData.append('discount_percentage', discount);
 
-            const typeLabel = type === 'game' ? 'Jeu Vidéo' : 'Carte Cadeau';
-            let iconClass = 'fas fa-gamepad';
-            if (type === 'giftcard') {
-                if (name.toLowerCase().includes('playstation')) iconClass = 'fab fa-playstation';
-                else if (name.toLowerCase().includes('steam')) iconClass = 'fab fa-steam';
-                else if (name.toLowerCase().includes('xbox')) iconClass = 'fab fa-xbox';
-                else iconClass = 'fas fa-gift';
-            }
-
-            if (currentMode === 'add') {
-                const newCard = document.createElement('div');
-                newCard.className = 'game-card';
-                newCard.innerHTML = `
-                    <div class="game-image-placeholder" ${!isIcon ? `style="background-image: url('${imageSource}'); background-size: cover; background-position: center;"` : ''}>
-                        ${isIcon ? `<i class="${iconClass}"></i>` : ''}
-                    </div>
-                    <div class="game-info">
-                        <h3>${name}</h3>
-                        <div class="game-meta">
-                            <p><strong>Catégorie:</strong> ${category}</p>
-                            <p><strong>Type:</strong> ${typeLabel}</p>
-                        </div>
-                        <p class="game-price">${parseFloat(price).toFixed(2)}€</p>
-                        <div class="game-buttons">
-                            <button class="btn btn-secondary edit-product">
-                                <i class="fas fa-edit"></i> Modifier
-                            </button>
-                            <button class="btn btn-danger delete-product">
-                                <i class="fas fa-trash"></i> Supprimer
-                            </button>
-                        </div>
-                    </div>
-                `;
-                gamesGrid.prepend(newCard);
-                alert('Produit ajouté avec succès !');
-            } else if (currentMode === 'edit' && currentEditCard) {
-                // Update existing card
-                const imagePlaceholder = currentEditCard.querySelector('.game-image-placeholder');
-                if (!isIcon) {
-                    imagePlaceholder.style.backgroundImage = `url('${imageSource}')`;
-                    imagePlaceholder.style.backgroundSize = 'cover';
-                    imagePlaceholder.style.backgroundPosition = 'center';
-                    imagePlaceholder.innerHTML = '';
-                } else {
-                    imagePlaceholder.style.backgroundImage = 'none';
-                    imagePlaceholder.innerHTML = `<i class="${iconClass}"></i>`;
-                }
-
-                currentEditCard.querySelector('h3').textContent = name;
-                currentEditCard.querySelector('.game-meta p:nth-child(1)').innerHTML = `<strong>Catégorie:</strong> ${category}`;
-                currentEditCard.querySelector('.game-meta p:nth-child(2)').innerHTML = `<strong>Type:</strong> ${typeLabel}`;
-                currentEditCard.querySelector('.game-price').textContent = `${parseFloat(price).toFixed(2)}€`;
-
-                alert('Produit modifié avec succès !');
-            }
+            fetch('items.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload(); // Simplest way to reflect changes
+                    } else {
+                        alert('Erreur: ' + data.message);
+                    }
+                });
 
             closeModal();
             productForm.reset();

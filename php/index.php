@@ -1,10 +1,4 @@
 <?php
-require_once 'session.php';
-
-if (!check_login($conn)) {
-    header("Location: login.php");
-    exit();
-}
-
-include '../templates/dashboard_view.html';
+header("Location: ../index.php" . ($_SERVER['QUERY_STRING'] ? "?" . $_SERVER['QUERY_STRING'] : ""));
+exit();
 ?>

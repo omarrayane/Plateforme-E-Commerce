@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$password = "01092005f5";
+$password = "01092005";
 
 $temp_conn = new mysqli($host, $user, $password);
 

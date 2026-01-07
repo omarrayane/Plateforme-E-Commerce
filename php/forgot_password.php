@@ -1,10 +1,4 @@
 <?php
-require_once 'session.php';
-require_once 'auth_logic.php';
-
-$res = handle_forgot_password($conn);
-$error = $res['error'];
-$success = $res['success'];
-
-include '../templates/forgot_password_view.html';
+header("Location: ../forgot_password.php" . ($_SERVER['QUERY_STRING'] ? "?" . $_SERVER['QUERY_STRING'] : ""));
+exit();
 ?>

@@ -1,7 +1,4 @@
 <?php
-require_once 'session.php';
-clear_cookies();
-session_destroy();
-header("Location: login.php");
+header("Location: ../logout.php" . ($_SERVER['QUERY_STRING'] ? "?" . $_SERVER['QUERY_STRING'] : ""));
 exit();
 ?>

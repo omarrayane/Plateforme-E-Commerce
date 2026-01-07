@@ -1,10 +1,4 @@
 <?php
-require_once 'session.php';
-
-if (!check_login($conn) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
-}
-
-include '../templates/admin_view.html';
+header("Location: ../admin.php" . ($_SERVER['QUERY_STRING'] ? "?" . $_SERVER['QUERY_STRING'] : ""));
+exit();
 ?>

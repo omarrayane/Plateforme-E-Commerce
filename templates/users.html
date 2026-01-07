@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css?v=1.2">
 </head>
 
 <body>
@@ -29,25 +29,25 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li>
-                        <a href="admin.html">
+                        <a href="admin.php">
                             <i class="fas fa-th-large"></i>
                             <span>Tableau de bord</span>
                         </a>
                     </li>
                     <li class="active">
-                        <a href="users.html">
+                        <a href="users.php">
                             <i class="fas fa-users"></i>
                             <span>Utilisateurs</span>
                         </a>
                     </li>
                     <li>
-                        <a href="Games.html">
+                        <a href="items.php">
                             <i class="fas fa-gamepad"></i>
                             <span>Jeux & Cartes</span>
                         </a>
                     </li>
                     <li>
-                        <a href="Orders.html">
+                        <a href="cart.php">
                             <i class="fas fa-shopping-cart"></i>
                             <span>Commandes</span>
                         </a>
@@ -56,7 +56,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <a href="login.html" class="logout-link"
+                <a href="logout.php" class="logout-link"
                     onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Déconnexion</span>
@@ -92,73 +92,46 @@
                             </tr>
                         </thead>
                         <tbody id="users-body">
-                            <!-- User Row 1 -->
-                            <tr>
+                            <?php foreach ($users as $user): ?>
+                            <tr data-id="<?php echo $user['id']; ?>">
                                 <td>
                                     <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=Mohamed+A&background=random"
+                                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($user['username']); ?>&background=random"
                                             alt="Avatar" class="avatar">
-                                        <span>Mohamed A.</span>
+                                        <span>
+                                            <?php echo htmlspecialchars($user['username']); ?>
+                                        </span>
                                     </div>
                                 </td>
-                                <td>mohamed.a@example.com</td>
-                                <td><span class="status-badge complete">Utilisateur</span></td>
+                                <td>
+                                    <?php echo htmlspecialchars($user['email']); ?>
+                                </td>
+                                <td><span
+                                        class="status-badge <?php echo $user['role'] === 'admin' ? 'pending' : 'complete'; ?>">
+                                        <?php echo ucfirst($user['role']); ?>
+                                    </span></td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn btn-primary btn-sm promote-admin" title="Rendre Admin">
+                                        <?php if ($user['role'] !== 'admin'): ?>
+                                        <button class="btn btn-primary btn-sm" title="Rendre Admin"
+                                            onclick="window.manageUser('promote', <?php echo $user['id']; ?>, '<?php echo addslashes($user['username']); ?>')">
                                             <i class="fas fa-user-shield"></i> Promote
                                         </button>
-                                        <button class="btn btn-danger btn-sm delete-user" title="Supprimer">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- User Row 2 -->
-                            <tr>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=Sarah+K&background=random"
-                                            alt="Avatar" class="avatar">
-                                        <span>Sarah K.</span>
-                                    </div>
-                                </td>
-                                <td>sarah.k@example.com</td>
-                                <td><span class="status-badge pending">Administrateur</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-secondary btn-sm demote-admin"
-                                            title="Rendre Utilisateur">
+                                        <?php else: ?>
+                                        <button class="btn btn-secondary btn-sm" title="Rendre Utilisateur"
+                                            onclick="window.manageUser('demote', <?php echo $user['id']; ?>, '<?php echo addslashes($user['username']); ?>')">
                                             <i class="fas fa-user-minus"></i> Demote
                                         </button>
-                                        <button class="btn btn-danger btn-sm delete-user" title="Supprimer">
+                                        <?php endif; ?>
+                                        <button class="btn btn-danger btn-sm" title="Supprimer"
+                                            onclick="window.manageUser('delete', <?php echo $user['id']; ?>, '<?php echo addslashes($user['username']); ?>')"
+                                            <?php echo $user['id']==$_SESSION['user_id'] ? 'disabled' : '' ; ?>>
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                            <!-- User Row 3 -->
-                            <tr>
-                                <td>
-                                    <div class="user-info">
-                                        <img src="https://ui-avatars.com/api/?name=Yassine+B&background=random"
-                                            alt="Avatar" class="avatar">
-                                        <span>Yassine B.</span>
-                                    </div>
-                                </td>
-                                <td>yassine.b@example.com</td>
-                                <td><span class="status-badge complete">Utilisateur</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="btn btn-primary btn-sm promote-admin" title="Rendre Admin">
-                                            <i class="fas fa-user-shield"></i> Promote
-                                        </button>
-                                        <button class="btn btn-danger btn-sm delete-user" title="Supprimer">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -167,8 +140,8 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="../assets/js/admin.js"></script>
-    <script src="../assets/js/users.js"></script>
+    <script src="assets/js/admin.js"></script>
+    <script src="assets/js/users.js?v=1.3"></script>
 </body>
 
 </html>

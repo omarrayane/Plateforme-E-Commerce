@@ -22,13 +22,23 @@
     box-shadow: 0 10px 30px rgba(13, 110, 253, 0.2);
 }
 
-.game-image-placeholder {
+.game-photo-container {
     width: 100%;
     height: 180px;
-    background: linear-gradient(135deg, var(--bg-card) 0%, var(--primary-blue) 100%);
+    background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.2) 100%);
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.game-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-photo-placeholder {
     font-size: 3rem;
     color: var(--text-muted);
 }
@@ -224,8 +234,8 @@
     gap: 15px;
 }
 
-/* Image Upload & Preview */
-.image-upload-wrapper {
+/* Photo Upload & Preview */
+.photo-upload-wrapper {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -256,11 +266,11 @@
     font-size: 0.8rem;
 }
 
-#product-image-url {
+#product-photo {
     flex: 1;
 }
 
-.image-preview-container {
+.photo-preview-container {
     margin-top: 15px;
     position: relative;
     width: 100%;
@@ -273,11 +283,11 @@
     justify-content: center;
 }
 
-.image-preview-container.hidden {
+.photo-preview-container.hidden {
     display: none;
 }
 
-#image-preview {
+#photo-preview {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -309,4 +319,115 @@
 
 .header-text {
     margin-bottom: 20px;
+}
+
+/* Special Offer Badge */
+.offer-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ff4d4d;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+    z-index: 10;
+}
+
+.game-photo-container {
+    position: relative;
+}
+
+/* Price Styling for Special Offers */
+.old-price {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-right: 8px;
+}
+
+.new-price {
+    color: #ff4d4d;
+    font-weight: 700;
+}
+
+/* Checkbox Styling */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 22px;
+    width: 22px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.checkbox-container:hover input~.checkmark {
+    border-color: var(--primary-blue);
+}
+
+.checkbox-container input:checked~.checkmark {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked~.checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.offer-group {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+}
+
+.discount-input-wrapper {
+    margin-top: 10px;
+    transition: var(--transition);
+}
+
+.hidden {
+    display: none !important;
 }

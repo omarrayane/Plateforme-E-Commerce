@@ -1,550 +1,472 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="GameShop - La meilleure boutique de jeux vidéo en ligne. Découvrez des milliers de jeux  à prix réduit."
-    />
-    <meta
-      name="keywords"
-      content="jeux vidéo, gaming, steam, playstation, xbox, pc games, console games"
-    />
-    <meta name="author" content="GameShop" />
-    <meta name="robots" content="index, follow" />
-    <title>GameShop - Premium Gaming Store</title>
-    <link rel="stylesheet" href="../assets/css/dashboard.css" />
-    <meta property="og:title" content="GameShop - Premium Gaming Store" />
-    <meta
-      property="og:description"
-      content="Découvrez des milliers de jeux à prix réduit avec livraison instantanée."
-    />
-    <meta
-      property="og:image"
-      content="https://via.placeholder.com/1200x630/6366f1/FFFFFF?text=GameShop"
-    />
-    <meta property="og:url" content="https://gameshop.com" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#6366f1" />
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>"
-    />
-  </head>
-  <body>
-    <div id="immersive-bg"></div>
-    <header>
-      <div class="container">
-        <a href="#" class="logo"
-          >GameShop<span style="color: var(--primary)">.</span></a
-        >
-        <nav>
-          <ul>
-            <li><a href="#home" class="active">Accueil</a></li>
-            <li><a href="#games">Catalogue</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li>
-              <button
-                id="theme-toggle"
-                class="theme-toggle"
-                aria-label="Basculer le thème"
-              >
-                <span class="theme-icon">🌙</span>
-              </button>
-            </li>
-            <li>
-              <a
-                href="#"
-                onclick="event.preventDefault(); toggleCart()"
-                class="cart-icon-nav"
-                aria-label="Panier"
-              >
-                <span class="cart-icon">🛍️</span>
-                <span
-                  id="cart-count"
-                  class="cart-badge"
-                  aria-label="Nombre d'articles"
-                  >0</span
-                >
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                onclick="event.preventDefault(); toggleWishlistSidebar()"
-                class="cart-icon-nav"
-                aria-label="Favoris"
-              >
-                <span class="cart-icon">❤️</span>
-                <span
-                  id="wishlist-count"
-                  class="cart-badge"
-                  style="background: var(--danger)"
-                  >0</span
-                >
-              </a>
-            </li>
-          </ul>
-        </nav>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="GameShop - La meilleure boutique de jeux vidéo en ligne. Découvrez des milliers de jeux  à prix réduit." />
+  <meta name="keywords" content="jeux vidéo, gaming, steam, playstation, xbox, pc games, console games" />
+  <meta name="author" content="GameShop" />
+  <meta name="robots" content="index, follow" />
+  <title>GameShop - Premium Gaming Store</title>
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=1.1" />
+  <meta property="og:title" content="GameShop - Premium Gaming Store" />
+  <meta property="og:description" content="Découvrez des milliers de jeux à prix réduit avec livraison instantanée." />
+  <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/FFFFFF?text=GameShop" />
+  <meta property="og:url" content="https://gameshop.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#6366f1" />
+  <link rel="icon" type="image/x-icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>" />
+</head>
+
+<body>
+  <div id="immersive-bg"></div>
+  <header>
+    <div class="container">
+      <a href="#" class="logo">GameShop<span style="color: var(--primary)">.</span></a>
+      <nav>
+        <ul>
+          <li><a href="#home" class="active">Accueil</a></li>
+          <li><a href="#games">Catalogue</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Basculer le thème">
+              <span class="theme-icon">🌙</span>
+            </button>
+          </li>
+          <li>
+            <a href="#" onclick="event.preventDefault(); toggleCart()" class="cart-icon-nav" aria-label="Panier">
+              <span class="cart-icon">🛍️</span>
+              <span id="cart-count" class="cart-badge" aria-label="Nombre d'articles">0</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="event.preventDefault(); toggleWishlistSidebar()" class="cart-icon-nav"
+              aria-label="Favoris">
+              <span class="cart-icon">❤️</span>
+              <span id="wishlist-count" class="cart-badge" style="background: var(--danger)">0</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div id="hero-carousel" class="hero-carousel">
+        <!-- Slides injectés par JS -->
       </div>
-    </header>
 
-    <main>
-      <section id="home" class="hero">
-        <div id="hero-carousel" class="hero-carousel">
-          <!-- Slides injectés par JS -->
+      <div class="hero-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+      </div>
+      <div class="container hero-content">
+        <div class="hero-text">
+          <h1 id="hero-title">
+            Le futur du <br /><span class="highlight">Gaming</span> est ici.
+          </h1>
+          <p id="hero-desc">
+            Découvrez une bibliothèque immense de jeux AAA et indépendants à
+            des prix imbattables.
+          </p>
+          <div class="hero-buttons">
+            <a href="#games" class="btn btn-primary">Explorer le catalogue</a>
+            <a href="#features" class="btn btn-secondary">En savoir plus</a>
+          </div>
+          <div class="carousel-indicators" id="hero-indicators"></div>
         </div>
-
-        <div class="hero-shapes">
-          <div class="shape shape-1"></div>
-          <div class="shape shape-2"></div>
-        </div>
-        <div class="container hero-content">
-          <div class="hero-text">
-            <h1 id="hero-title">
-              Le futur du <br /><span class="highlight">Gaming</span> est ici.
-            </h1>
-            <p id="hero-desc">
-              Découvrez une bibliothèque immense de jeux AAA et indépendants à
-              des prix imbattables.
+      </div>
+    </section>
+    <section id="features" class="features-section">
+      <div class="container">
+        <div class="features-grid">
+          <div class="feature-box">
+            <span class="feature-icon">🚀</span>
+            <h3>Instantané</h3>
+            <p>
+              Clés livrées en quelques secondes après l'achat. Pas d'attente,
+              jouez tout de suite.
             </p>
-            <div class="hero-buttons">
-              <a href="#games" class="btn btn-primary">Explorer le catalogue</a>
-              <a href="#features" class="btn btn-secondary">En savoir plus</a>
-            </div>
-            <div class="carousel-indicators" id="hero-indicators"></div>
+          </div>
+          <div class="feature-box">
+            <span class="feature-icon">🛡️</span>
+            <h3>Sécurisé</h3>
+            <p>
+              Paiements cryptés et garantie de remboursement. Votre sécurité
+              est notre priorité.
+            </p>
+          </div>
+          <div class="feature-box">
+            <span class="feature-icon">💎</span>
+            <h3>Meilleurs Prix</h3>
+            <p>
+              Des promotions régulières et des prix défiant toute concurrence
+              sur le marché.
+            </p>
+          </div>
+          <div class="feature-box">
+            <span class="feature-icon">🎧</span>
+            <h3>Support 24/7</h3>
+            <p>
+              Une équipe passionnée à votre écoute pour résoudre vos soucis
+              jour et nuit.
+            </p>
           </div>
         </div>
-      </section>
-      <section id="features" class="features-section">
-        <div class="container">
-          <div class="features-grid">
-            <div class="feature-box">
-              <span class="feature-icon">🚀</span>
-              <h3>Instantané</h3>
-              <p>
-                Clés livrées en quelques secondes après l'achat. Pas d'attente,
-                jouez tout de suite.
-              </p>
-            </div>
-            <div class="feature-box">
-              <span class="feature-icon">🛡️</span>
-              <h3>Sécurisé</h3>
-              <p>
-                Paiements cryptés et garantie de remboursement. Votre sécurité
-                est notre priorité.
-              </p>
-            </div>
-            <div class="feature-box">
-              <span class="feature-icon">💎</span>
-              <h3>Meilleurs Prix</h3>
-              <p>
-                Des promotions régulières et des prix défiant toute concurrence
-                sur le marché.
-              </p>
-            </div>
-            <div class="feature-box">
-              <span class="feature-icon">🎧</span>
-              <h3>Support 24/7</h3>
-              <p>
-                Une équipe passionnée à votre écoute pour résoudre vos soucis
-                jour et nuit.
-              </p>
-            </div>
+      </div>
+    </section>
+    <section id="games" class="games-section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Jeux en Vedette</h2>
+            <p class="section-subtitle">
+              Les titres les plus populaires du moment
+            </p>
           </div>
         </div>
-      </section>
-      <section id="games" class="games-section">
-        <div class="container">
-          <div class="section-header">
-            <div>
-              <h2 class="section-title">Jeux en Vedette</h2>
-              <p class="section-subtitle">
-                Les titres les plus populaires du moment
-              </p>
-            </div>
+        <div class="filters-bar">
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Rechercher (Ctrl+K)..." />
+            <div class="search-suggestions"></div>
           </div>
-          <div class="filters-bar">
-            <div class="search-wrapper">
-              <span class="search-icon">🔍</span>
-              <input
-                type="text"
-                id="search-input"
-                placeholder="Rechercher (Ctrl+K)..."
-              />
-              <div class="search-suggestions"></div>
-            </div>
 
-            <div class="category-pills" id="category-pills">
-              <button class="pill active" data-category="all">Tout</button>
-              <button class="pill" data-category="Action">Action</button>
-              <button class="pill" data-category="Aventure">Aventure</button>
-              <button class="pill" data-category="RPG">RPG</button>
-              <button class="pill" data-category="Stratégie">Stratégie</button>
-              <button class="pill" data-category="Sport">Sport</button>
-              <button class="pill" data-category="Course">Course</button>
-            </div>
+          <div class="category-pills" id="category-pills">
+            <button class="pill active" data-category="all">Tout</button>
+            <button class="pill" data-category="Action">Action</button>
+            <button class="pill" data-category="Aventure">Aventure</button>
+            <button class="pill" data-category="RPG">RPG</button>
+            <button class="pill" data-category="Stratégie">Stratégie</button>
+            <button class="pill" data-category="Sport">Sport</button>
+            <button class="pill" data-category="Course">Course</button>
+          </div>
 
-            <select id="platform-select">
-              <option value="all">Toutes les plateformes</option>
-              <option value="PC">PC</option>
-              <option value="PlayStation">PlayStation</option>
-              <option value="Xbox">Xbox</option>
-              <option value="Nintendo Switch">Nintendo Switch</option>
-            </select>
+          <select id="platform-select">
+            <option value="all">Toutes les plateformes</option>
+            <option value="PC">PC</option>
+            <option value="PlayStation">PlayStation</option>
+            <option value="Xbox">Xbox</option>
+            <option value="Nintendo Switch">Nintendo Switch</option>
+          </select>
 
-            <select id="sort-select">
-              <option value="default">Trier par défaut</option>
-              <option value="price-low">Prix croissant</option>
-              <option value="price-high">Prix décroissant</option>
-              <option value="rating">Meilleures notes</option>
-              <option value="newest">Plus récents</option>
-            </select>
+          <select id="sort-select">
+            <option value="default">Trier par défaut</option>
+            <option value="price-low">Prix croissant</option>
+            <option value="price-high">Prix décroissant</option>
+            <option value="rating">Meilleures notes</option>
+            <option value="newest">Plus récents</option>
+          </select>
 
-            <div
-              style="
+          <div style="
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 color: var(--text-muted);
-              "
-            >
-              <span
-                >Prix max:
-                <b style="color: var(--primary)" id="price-value">100€</b></span
-              >
-              <input
-                type="range"
-                id="price-range"
-                min="0"
-                max="100"
-                value="100"
-              />
-            </div>
-          </div>
-
-          <div class="games-grid" id="games-grid">
-            <!-- Les cartes seront injectées par JS -->
+              ">
+            <span>Prix max:
+              <b style="color: var(--primary)" id="price-value">100€</b></span>
+            <input type="range" id="price-range" min="0" max="100" value="100" />
           </div>
         </div>
-      </section>
 
-      <section class="testimonials-section">
-        <div class="container">
-          <div
-            class="section-header"
-            style="justify-content: center; text-align: center"
-          >
-            <div>
-              <h2 class="section-title">Ce que disent nos joueurs</h2>
-              <p class="section-subtitle">Des milliers de gamers satisfaits</p>
-            </div>
-          </div>
-
-          <div class="testimonials-grid">
-            <div class="testimonial-card">
-              <div class="testimonial-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">5.0</span>
-              </div>
-              <p class="testimonial-text">
-                "GameShop a révolutionné ma façon d'acheter des jeux. Interface
-                incroyable, prix compétitifs et support réactif. Je recommande à
-                100% !"
-              </p>
-              <div class="testimonial-author">
-                <img
-                  src="https://via.placeholder.com/60x60/667eea/FFFFFF?text=JD"
-                  alt="Jean Dupont"
-                />
-                <div>
-                  <h4>Jean Dupont</h4>
-                  <span>Gamer depuis 2010</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card featured">
-              <div class="testimonial-badge">⭐ Avis Vérifié</div>
-              <div class="testimonial-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">5.0</span>
-              </div>
-              <p class="testimonial-text">
-                "Après avoir testé plusieurs boutiques en ligne, GameShop est
-                clairement la meilleure. Catalogue énorme, livraison instantanée
-                et aucune arnaque. Bravo !"
-              </p>
-              <div class="testimonial-author">
-                <img
-                  src="https://via.placeholder.com/60x60/764ba2/FFFFFF?text=ML"
-                  alt="Marie Leroy"
-                />
-                <div>
-                  <h4>Marie Leroy</h4>
-                  <span>Streamer Twitch</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card">
-              <div class="testimonial-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-text">4.9</span>
-              </div>
-              <p class="testimonial-text">
-                "Service client exceptionnel ! J'ai eu un problème technique et
-                ils m'ont aidé en 5 minutes. Les jeux sont toujours au meilleur
-                prix."
-              </p>
-              <div class="testimonial-author">
-                <img
-                  src="https://via.placeholder.com/60x60/FF9800/FFFFFF?text=PM"
-                  alt="Pierre Martin"
-                />
-                <div>
-                  <h4>Pierre Martin</h4>
-                  <span>Développeur Indie</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="games-grid" id="games-grid">
+          <!-- Les cartes seront injectées par JS -->
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="offers-section">
-        <div class="container">
-          <div class="section-header">
-            <div>
-              <h2 class="section-title">Offres Spéciales</h2>
-              <p class="section-subtitle">
-                Profitez de réductions exceptionnelles
-              </p>
-            </div>
-            <div class="countdown-timer" id="countdown">
-              <div class="timer-item">
-                <span class="timer-value" id="days">02</span>
-                <span class="timer-label">Jours</span>
-              </div>
-              <div class="timer-item">
-                <span class="timer-value" id="hours">14</span>
-                <span class="timer-label">Heures</span>
-              </div>
-              <div class="timer-item">
-                <span class="timer-value" id="minutes">27</span>
-                <span class="timer-label">Min</span>
-              </div>
-              <div class="timer-item">
-                <span class="timer-value" id="seconds">45</span>
-                <span class="timer-label">Sec</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="offers-grid">
-            <div class="offer-card special">
-              <div class="offer-badge">-70%</div>
-              <img
-                src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg"
-                alt="Red Dead Redemption 2"
-              />
-              <div class="offer-content">
-                <h3>Red Dead Redemption 2</h3>
-                <div class="offer-prices">
-                  <span class="original-price">€59.99</span>
-                  <span class="discount-price">€17.99</span>
-                </div>
-                <a href="#" class="btn btn-primary">Acheter Maintenant</a>
-              </div>
-            </div>
-
-            <div class="offer-card">
-              <div class="offer-badge">-50%</div>
-              <img
-                src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg"
-                alt="The Witcher 3"
-              />
-              <div class="offer-content">
-                <h3>The Witcher 3: Wild Hunt</h3>
-                <div class="offer-prices">
-                  <span class="original-price">€39.99</span>
-                  <span class="discount-price">€19.99</span>
-                </div>
-                <a href="#" class="btn btn-secondary">Voir l'Offre</a>
-              </div>
-            </div>
-
-            <div class="offer-card">
-              <div class="offer-badge">-40%</div>
-              <img
-                src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg"
-                alt="Elden Ring"
-              />
-              <div class="offer-content">
-                <h3>Elden Ring</h3>
-                <div class="offer-prices">
-                  <span class="original-price">€59.99</span>
-                  <span class="discount-price">€35.99</span>
-                </div>
-                <a href="#" class="btn btn-secondary">Voir l'Offre</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="newsletter-section">
-        <div class="container">
-          <div class="newsletter-content">
-            <div class="newsletter-text">
-              <h2>Restez dans la Boucle</h2>
-              <p>
-                Recevez les dernières nouvelles gaming, offres exclusives et
-                sorties en avant-première directement dans votre boîte mail.
-              </p>
-              <ul class="newsletter-benefits">
-                <li>🎮 Nouvelles sorties en exclusivité</li>
-                <li>💰 Codes promo personnalisés</li>
-                <li>🎯 Offres flash avant tout le monde</li>
-                <li>📱 Conseils et guides gaming</li>
-              </ul>
-            </div>
-            <div class="newsletter-form">
-              <div class="form-group">
-                <input
-                  type="email"
-                  id="newsletter-email"
-                  placeholder="votre.email@exemple.com"
-                  required
-                />
-                <button
-                  onclick="subscribeNewsletter()"
-                  class="btn btn-primary btn-large"
-                >
-                  <span class="btn-text">S'inscrire Gratuitement</span>
-                  <span class="btn-icon">🚀</span>
-                </button>
-              </div>
-              <p class="privacy-text">
-                Nous respectons votre vie privée. Désinscription en 1 clic.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
+    <section class="testimonials-section">
       <div class="container">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <h2>GameShop.</h2>
-            <p>
-              La référence du gaming digital en France. Qualité, rapidité et
-              fiabilité.
+        <div class="section-header" style="justify-content: center; text-align: center">
+          <div>
+            <h2 class="section-title">Ce que disent nos joueurs</h2>
+            <p class="section-subtitle">Des milliers de gamers satisfaits</p>
+          </div>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-text">5.0</span>
+            </div>
+            <p class="testimonial-text">
+              "GameShop a révolutionné ma façon d'acheter des jeux. Interface
+              incroyable, prix compétitifs et support réactif. Je recommande à
+              100% !"
+            </p>
+            <div class="testimonial-author">
+              <img src="https://via.placeholder.com/60x60/667eea/FFFFFF?text=JD" alt="Jean Dupont" />
+              <div>
+                <h4>Jean Dupont</h4>
+                <span>Gamer depuis 2010</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card featured">
+            <div class="testimonial-badge">⭐ Avis Vérifié</div>
+            <div class="testimonial-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-text">5.0</span>
+            </div>
+            <p class="testimonial-text">
+              "Après avoir testé plusieurs boutiques en ligne, GameShop est
+              clairement la meilleure. Catalogue énorme, livraison instantanée
+              et aucune arnaque. Bravo !"
+            </p>
+            <div class="testimonial-author">
+              <img src="https://via.placeholder.com/60x60/764ba2/FFFFFF?text=ML" alt="Marie Leroy" />
+              <div>
+                <h4>Marie Leroy</h4>
+                <span>Streamer Twitch</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-text">4.9</span>
+            </div>
+            <p class="testimonial-text">
+              "Service client exceptionnel ! J'ai eu un problème technique et
+              ils m'ont aidé en 5 minutes. Les jeux sont toujours au meilleur
+              prix."
+            </p>
+            <div class="testimonial-author">
+              <img src="https://via.placeholder.com/60x60/FF9800/FFFFFF?text=PM" alt="Pierre Martin" />
+              <div>
+                <h4>Pierre Martin</h4>
+                <span>Développeur Indie</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="offers-section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Offres Spéciales</h2>
+            <p class="section-subtitle">
+              Profitez de réductions exceptionnelles
             </p>
           </div>
-          <div class="footer-links">
-            <h4>Navigation</h4>
-            <ul>
-              <li><a href="#home">Accueil</a></li>
-              <li><a href="#games">Catalogue</a></li>
-              <li><a href="#features">Avantages</a></li>
-            </ul>
-          </div>
-          <div class="footer-links">
-            <h4>Support</h4>
-            <ul>
-              <li><a href="#">Aide & FAQ</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Livraison</a></li>
-            </ul>
-          </div>
-          <div class="footer-links">
-            <h4>Légal</h4>
-            <ul>
-              <li><a href="#">Conditions générales</a></li>
-              <li><a href="#">Confidentialité</a></li>
-              <li><a href="#">Cookies</a></li>
-            </ul>
+          <div class="countdown-timer" id="countdown">
+            <div class="timer-item">
+              <span class="timer-value" id="days">02</span>
+              <span class="timer-label">Jours</span>
+            </div>
+            <div class="timer-item">
+              <span class="timer-value" id="hours">14</span>
+              <span class="timer-label">Heures</span>
+            </div>
+            <div class="timer-item">
+              <span class="timer-value" id="minutes">27</span>
+              <span class="timer-label">Min</span>
+            </div>
+            <div class="timer-item">
+              <span class="timer-value" id="seconds">45</span>
+              <span class="timer-label">Sec</span>
+            </div>
           </div>
         </div>
-        <div class="footer-bottom">
+
+        <div class="offers-grid">
+          <div class="offer-card special">
+            <div class="offer-badge">-70%</div>
+            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg"
+              alt="Red Dead Redemption 2" />
+            <div class="offer-content">
+              <h3>Red Dead Redemption 2</h3>
+              <div class="offer-prices">
+                <span class="original-price">€59.99</span>
+                <span class="discount-price">€17.99</span>
+              </div>
+              <a href="#" class="btn btn-primary">Acheter Maintenant</a>
+            </div>
+          </div>
+
+          <div class="offer-card">
+            <div class="offer-badge">-50%</div>
+            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg"
+              alt="The Witcher 3" />
+            <div class="offer-content">
+              <h3>The Witcher 3: Wild Hunt</h3>
+              <div class="offer-prices">
+                <span class="original-price">€39.99</span>
+                <span class="discount-price">€19.99</span>
+              </div>
+              <a href="#" class="btn btn-secondary">Voir l'Offre</a>
+            </div>
+          </div>
+
+          <div class="offer-card">
+            <div class="offer-badge">-40%</div>
+            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg"
+              alt="Elden Ring" />
+            <div class="offer-content">
+              <h3>Elden Ring</h3>
+              <div class="offer-prices">
+                <span class="original-price">€59.99</span>
+                <span class="discount-price">€35.99</span>
+              </div>
+              <a href="#" class="btn btn-secondary">Voir l'Offre</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-content">
+          <div class="newsletter-text">
+            <h2>Restez dans la Boucle</h2>
+            <p>
+              Recevez les dernières nouvelles gaming, offres exclusives et
+              sorties en avant-première directement dans votre boîte mail.
+            </p>
+            <ul class="newsletter-benefits">
+              <li>🎮 Nouvelles sorties en exclusivité</li>
+              <li>💰 Codes promo personnalisés</li>
+              <li>🎯 Offres flash avant tout le monde</li>
+              <li>📱 Conseils et guides gaming</li>
+            </ul>
+          </div>
+          <div class="newsletter-form">
+            <div class="form-group">
+              <input type="email" id="newsletter-email" placeholder="votre.email@exemple.com" required />
+              <button onclick="subscribeNewsletter()" class="btn btn-primary btn-large">
+                <span class="btn-text">S'inscrire Gratuitement</span>
+                <span class="btn-icon">🚀</span>
+              </button>
+            </div>
+            <p class="privacy-text">
+              Nous respectons votre vie privée. Désinscription en 1 clic.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>GameShop.</h2>
           <p>
-            &copy; 2025 GameShop. Tous droits réservés. Créé avec ❤️ pour les
-            gamers.
+            La référence du gaming digital en France. Qualité, rapidité et
+            fiabilité.
           </p>
         </div>
-      </div>
-    </footer>
-
-    <!-- Modal pour les Détails du Jeu -->
-    <div id="game-modal" class="modal">
-      <div class="modal-backdrop"></div>
-      <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="modal-img-col">
-          <img id="modal-image" src="" alt="Game Image" />
+        <div class="footer-links">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#games">Catalogue</a></li>
+            <li><a href="#features">Avantages</a></li>
+          </ul>
         </div>
-        <div class="modal-info-col">
-          <div class="modal-tags" id="modal-tags">
-            <!-- Tags -->
-          </div>
-          <h2 id="modal-title">Titre</h2>
-          <div class="modal-rating" id="modal-rating">
-            <!-- Étoiles -->
-          </div>
-          <p id="modal-description">Description...</p>
-          <div class="modal-actions">
-            <div class="modal-price-section">
-              <span id="modal-price" class="modal-price">Price</span>
-              <div class="price-info">
-                <span id="modal-original-price" class="original-price"
-                  >Original</span
-                >
-                <span id="modal-discount" class="discount-badge">Discount</span>
-              </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Aide & FAQ</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Livraison</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="#">Conditions générales</a></li>
+            <li><a href="#">Confidentialité</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2025 GameShop. Tous droits réservés. Créé avec ❤️ pour les
+          gamers.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal pour les Détails du Jeu -->
+  <div id="game-modal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <div class="modal-photo-col">
+        <img id="modal-photo" src="" alt="Game Photo" />
+      </div>
+      <div class="modal-info-col">
+        <div class="modal-tags" id="modal-tags">
+          <!-- Tags -->
+        </div>
+        <h2 id="modal-title">Titre</h2>
+        <div class="modal-rating" id="modal-rating">
+          <!-- Étoiles -->
+        </div>
+        <p id="modal-description">Description...</p>
+        <div class="modal-actions">
+          <div class="modal-price-section">
+            <span id="modal-price" class="modal-price">Price</span>
+            <div class="price-info">
+              <span id="modal-original-price" class="original-price">Original</span>
+              <span id="modal-discount" class="discount-badge">Discount</span>
             </div>
-            <div class="modal-buttons">
-              <button class="btn btn-secondary" onclick="addToCartFromModal()">
-                🛒 Panier
-              </button>
-              <button class="btn btn-primary" onclick="buyNow()">
-                Acheter
-              </button>
-            </div>
+          </div>
+          <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="addToCartFromModal()">
+              🛒 Panier
+            </button>
+            <button class="btn btn-primary" onclick="buyNow()">
+              Acheter
+            </button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Conteneur pour le détail immersif -->
-    <div id="product-detail"></div>
+  <!-- Conteneur pour le détail immersif -->
+  <div id="product-detail"></div>
 
-    <!-- Sidebar Panier -->
-    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cart-sidebar">
-      <div class="cart-header">
-        <h2>Mon Panier</h2>
-        <button class="close-cart" onclick="toggleCart()">×</button>
-      </div>
-      <div class="cart-items" id="cart-items">
-        <!-- Items -->
-      </div>
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span>Total</span>
-          <span id="cart-total-price">0.00 €</span>
-        </div>
-        <button class="btn btn-primary btn-block" onclick="checkout()">
-          Commander
-        </button>
-      </div>
+  <!-- Sidebar Panier -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h2>Mon Panier</h2>
+      <button class="close-cart" onclick="toggleCart()">×</button>
     </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Items -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cart-total-price">0.00 €</span>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="checkout()">
+        Commander
+      </button>
+    </div>
+  </div>
 
-    <!-- Scripts -->
-    <script src="../assets/js/dashboard.js"></script>
-  </body>
+  <!-- Scripts -->
+  <script src="assets/js/dashboard.js?v=1.1"></script>
+</body>
+
 </html>

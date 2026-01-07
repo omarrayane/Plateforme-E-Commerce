@@ -1,12 +1,11 @@
 <?php
-    $host = "localhost";
-    $user = "root";
-    $password = "01092005f5";
-    $database = "gaming_store";
+$host = "localhost";
+$user = "root";
+$password = "01092005";
+$database = "gaming_store";
 
-    $conn = new mysqli($host, $user, $password, $database);
+$conn = new mysqli($host, $user, $password, $database);
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-?>
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
