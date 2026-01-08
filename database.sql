@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS items (
     price DECIMAL(10, 2) NOT NULL,
     photo TEXT,
     description TEXT,
+    is_special_offer TINYINT(1) DEFAULT 0,
+    discount_percentage INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
