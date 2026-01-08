@@ -1,4 +1,4 @@
-
+console.log("Dashboard Loaded - Version Hybrid Design + New Buttons 1.1");
 let games = [];
 
 async function fetchGames() {
@@ -14,14 +14,33 @@ async function fetchGames() {
         if (data.success) {
             games = data.items;
             displayGames();
+            // Fetch cart after games are loaded (or concurrently)
+            fetchCart();
         }
     } catch (error) {
         console.error('Error fetching games:', error);
     }
 }
 
+async function fetchCart() {
+    const formData = new FormData();
+    formData.append('action', 'get_cart');
+    try {
+        const response = await fetch('index.php', { method: 'POST', body: formData });
+        const data = await response.json();
+        if (data.success) {
+            state.cart = data.cart;
+            updateCartCount();
+            renderCartIems();
+            // No need to save to localStorage as we rely on DB
+        }
+    } catch (e) {
+        console.error("Cart fetch error", e);
+    }
+}
+
 const state = {
-    cart: JSON.parse(localStorage.getItem('cart')) || [],
+    cart: [], // Source of truth is now server, initially empty until fetch
     filters: {
         text: '',
         category: 'all',
@@ -128,41 +147,39 @@ function displayGames() {
         gamesGrid.innerHTML += createGameCard(game, delay);
     });
 }
+// Reverted to Premium Design with Description Box + New Modal Logic
+
 function createGameCard(game, delay = 0) {
     const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
 
     return `
         <div class="game-card" data-id="${game.id}" style="animation: bounceIn 0.5s ease backwards ${delay}ms;">
             <div class="card-photo-wrapper">
-                <span class="card-badge">${game.category}</span>
-                <span class="platform-badge">${game.platform}</span>
-                ${discount > 0 ? `<span class="card-badge discount" style="background: var(--danger); top: 3.5rem;">-${discount}%</span>` : ''}
-                <img src="${game.photo}" alt="${game.title}" loading="lazy">
-                <div class="hover-overlay">
-                    <button class="btn btn-primary btn-view" onclick="openModal(${game.id})">Voir détails</button>
-                    <button class="btn btn-secondary btn-quick-add" onclick="event.stopPropagation(); addToCart(${game.id})">
-                        🛒 Ajouter
-                    </button>
+                <div class="card-tags-top">
+                    ${game.tags.slice(0, 2).map(tag => `<span class="tag-badge">${tag.toUpperCase()}</span>`).join('')}
                 </div>
-                <div class="card-glow"></div>
+                ${discount > 0 ? `<span class="discount-pill">-${discount}%</span>` : ''}
+                <img src="${game.photo}" alt="${game.title}" loading="lazy">
+                <div class="card-overlay-simple">
+                     <button class="btn-quick-view" onclick="openModal(${game.id})">Aperçu rapide</button>
+                </div>
             </div>
             <div class="card-content">
-                <div class="game-tags">
-                    ${game.tags.slice(0, 2).map(tag => `<span class="tag">${tag}</span>`).join('')}
-                </div>
                 <h3 class="card-title">${game.title}</h3>
-                <div class="rating-display">
-                    <div class="rating-stars">${'★'.repeat(Math.floor(game.rating))}${'☆'.repeat(5 - Math.floor(game.rating))}</div>
-                    <span class="rating-score">${game.rating}/5</span>
+                
+                <div class="card-rating-row">
+                    <div class="rating-stars-small">${'★'.repeat(Math.round(game.rating))}${'☆'.repeat(5 - Math.round(game.rating))}</div>
+                    <span class="rating-number">${game.rating}/5</span>
                 </div>
-                <div class="card-price-row">
-                    <div class="price-info">
-                        <span class="price">${game.price} €</span>
-                        ${game.originalPrice && game.originalPrice > game.price ? `<span class="original-price">${game.originalPrice} €</span>` : ''}
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn-icon" onclick="event.stopPropagation(); addToCart(${game.id})" title="Ajouter au panier">
+
+                <div class="card-footer-row">
+                    <div class="card-price-primary">${game.price} €</div>
+                    <div class="card-actions-icons">
+                        <button class="icon-btn-action" title="Ajouter au panier" onclick="event.stopPropagation(); addToCart(${game.id})">
                             🛒
+                        </button>
+                        <button class="icon-btn-action" title="Ajouter aux favoris">
+                            ❤️
                         </button>
                     </div>
                 </div>
@@ -170,20 +187,110 @@ function createGameCard(game, delay = 0) {
         </div>
     `;
 }
-function updateCartCount() {
-    if (cartCount) cartCount.textContent = state.cart.length;
-}
-// Update Wishlist function removed
-function addToCart(gameId) {
+
+// Updated Modal to match "Among Us" reference
+function openModal(gameId) {
     const game = games.find(g => g.id === gameId);
     if (!game) return;
-    state.cart.push(game);
+
+    state.currentModalGame = game;
+    const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
+
+    const modalHtml = `
+        <div class="modal-content-new">
+            <button class="close-modal-new" onclick="closeModal()">×</button>
+            
+            <div class="modal-image-col">
+                <img src="${game.photo}" alt="${game.title}">
+            </div>
+            
+            <div class="modal-info-col">
+                <div class="modal-badges">
+                    <span class="modal-badge-category">${game.category}</span>
+                    <span class="modal-badge-platform">${game.platform}</span>
+                </div>
+                
+                <div class="modal-rating-row">
+                    <span class="stars">${'★'.repeat(Math.floor(game.rating))}</span>
+                    <span class="score">${game.rating}/5</span>
+                </div>
+
+                <h2 class="modal-title">${game.title}</h2>
+                <p class="modal-description">${game.description}</p>
+
+                <div class="modal-price-box">
+                    ${discount > 0 ? `<span class="save-badge">Save ${discount}%</span>` : ''}
+                    
+                    <div class="modal-prices">
+                        <span class="current-price">${game.price} €</span>
+                        ${game.originalPrice ? `<span class="old-price">${game.originalPrice} €</span>` : ''}
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="btn-modal-add" onclick="addToCart(${game.id}, this)">
+                            🛒 Ajouter au panier
+                        </button>
+                        <button class="btn-modal-heart">
+                            ❤️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+    const modalContainer = document.getElementById('game-modal');
+    // Clear old content structure if needed or just replace innerHTML
+    modalContainer.innerHTML = modalHtml;
+
+    // We need to ensure the modal container has the class 'modal' and is displayed
+    modalContainer.className = 'modal active'; // Simple active toggle
+    modalContainer.style.display = 'flex';
+}
+function updateCartCount() {
+    if (cartCount) {
+        // Sum of all quantities
+        const totalCount = state.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartCount.textContent = totalCount;
+    }
+}
+// Update Wishlist function removed
+function addToCart(gameId, btnElement = null) {
+    const game = games.find(g => g.id == gameId);
+    if (!game) return;
+
+    // Add visual feedback if button element is passed
+    if (btnElement) {
+        const originalContent = btnElement.innerHTML;
+        btnElement.classList.add('added');
+        btnElement.innerHTML = `<span>Ajouté</span> <span>✔️</span>`;
+
+        setTimeout(() => {
+            btnElement.classList.remove('added');
+            btnElement.innerHTML = originalContent;
+        }, 2000);
+    }
+
+    // Check if item already exists
+    const existingItem = state.cart.find(item => item.id === game.id);
+
+    if (existingItem) {
+        existingItem.quantity = (existingItem.quantity || 1) + 1;
+        showNotification(`Quantité augmentée: ${game.title} (x${existingItem.quantity})`, 'info');
+    } else {
+        // Create a copy to match cart structure with quantity
+        const cartItem = { ...game, quantity: 1 };
+        state.cart.push(cartItem);
+        showNotification(`Ajouté au panier: ${game.title} `, 'success');
+    }
+
     updateCartCount();
     renderCartIems();
-    showNotification(`Ajouté au panier: ${game.title}`, 'success');
+
+    // Persist to local storage
     localStorage.setItem('cart', JSON.stringify(state.cart));
+
     const sidebar = document.getElementById('cart-sidebar');
-    const overlay = document.getElementById('cart-overlay');
     if (sidebar && !sidebar.classList.contains('active')) {
         toggleCart();
     }
@@ -220,28 +327,74 @@ function renderCartIems() {
         cartItemsContainer.innerHTML = '<div class="empty-cart-msg">Votre panier est vide 🛒</div>';
     } else {
         state.cart.forEach((item, index) => {
-            total += item.price;
+            const qty = item.quantity || 1;
+            total += item.price * qty;
+
             cartItemsContainer.innerHTML += `
-                <div class="cart-item">
-                    <img src="${item.photo}" alt="${item.title}">
-                    <div class="cart-item-info">
-                        <div class="cart-item-title">${item.title}</div>
-                        <div class="cart-item-price">${item.price} €</div>
-                        <span class="remove-item" onclick="removeFromCart(${index})">Retirer</span>
+        <div class="cart-item">
+            <img src="${item.photo}" alt="${item.title}">
+                <div class="cart-item-info">
+                    <div class="cart-item-title">
+                        ${item.title}
+                    </div>
+                    <div class="cart-item-price">${(item.price * qty).toFixed(2)} €</div>
+
+                    <div class="cart-qty-controls">
+                        <button class="btn-qty" onclick="changeQuantity(${index}, -1)">-</button>
+                        <span class="qty-display">${qty}</span>
+                        <button class="btn-qty" onclick="changeQuantity(${index}, 1)">+</button>
                     </div>
                 </div>
-            `;
+                <div class="btn-remove-all" onclick="removeFromCart(${index}, false)" title="Supprimer">
+                    🗑️
+                </div>
+            </div>
+    `;
         });
     }
 
     if (cartTotalPrice) cartTotalPrice.textContent = total.toFixed(2) + ' €';
 }
 
-function removeFromCart(index) {
-    state.cart.splice(index, 1);
-    updateCartCount();
-    renderCartIems();
-    localStorage.setItem('cart', JSON.stringify(state.cart));
+function changeQuantity(index, delta) {
+    const item = state.cart[index];
+    if (!item) return;
+
+    item.quantity = (item.quantity || 1) + delta;
+
+    if (item.quantity <= 0) {
+        removeFromCart(index, false);
+    } else {
+        updateCartCount();
+        renderCartIems();
+        // Server Sync
+        const formData = new FormData();
+        formData.append('action', 'update_cart_quantity');
+        formData.append('game_id', item.id);
+        formData.append('quantity', item.quantity);
+        fetch('index.php', { method: 'POST', body: formData });
+    }
+}
+
+function removeFromCart(index, decreaseOne = true) {
+    const item = state.cart[index];
+    if (!item) return;
+
+    if (decreaseOne && (item.quantity || 1) > 1) {
+        item.quantity--;
+        changeQuantity(index, 0); // Hack to trigger update sync without double changing
+    } else {
+        // Full remove
+        const gameId = item.id;
+        state.cart.splice(index, 1);
+        updateCartCount();
+        renderCartIems();
+
+        const formData = new FormData();
+        formData.append('action', 'remove_from_cart');
+        formData.append('game_id', gameId);
+        fetch('index.php', { method: 'POST', body: formData });
+    }
 }
 
 function checkout() {
@@ -252,7 +405,6 @@ function checkout() {
 
     const formData = new FormData();
     formData.append('action', 'checkout');
-    formData.append('cart', JSON.stringify(state.cart));
 
     fetch('index.php', {
         method: 'POST',
@@ -261,11 +413,10 @@ function checkout() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showNotification("Merci pour votre commande ! Votre commande a été enregistrée.", "success");
+                showNotification("Commande validée ! (Sauvegardée en BDD)", "success");
                 state.cart = [];
                 updateCartCount();
                 renderCartIems();
-                localStorage.setItem('cart', JSON.stringify(state.cart));
                 toggleCart();
             } else {
                 showNotification("Erreur lors de la commande: " + data.message, "danger");
@@ -274,18 +425,18 @@ function checkout() {
 }
 function showNotification(msg, type = 'success') {
     const notif = document.createElement('div');
-    notif.className = `notification ${type}`;
+    notif.className = `notification ${type} `;
     notif.style.cssText = `
-        position: fixed;
-        bottom: 20px; 
-        right: 20px;
-        background: ${type === 'success' ? 'var(--success)' : type === 'warning' ? 'var(--warning)' : type === 'info' ? 'var(--primary)' : 'var(--danger)'};
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: var(--radius-sm);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        animation: slideInRight 0.3s ease forwards;
-        z-index: 3000;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: ${type === 'success' ? 'var(--success)' : type === 'warning' ? 'var(--warning)' : type === 'info' ? 'var(--primary)' : 'var(--danger)'};
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: slideInRight 0.3s ease forwards;
+    z-index: 3000;
     `;
     notif.textContent = msg;
     document.body.appendChild(notif);
@@ -296,86 +447,60 @@ function showNotification(msg, type = 'success') {
     }, 3000);
 }
 function openModal(gameId) {
-    openImmersiveDetail(gameId);
-}
-function closeModal() {
-    closeImmersiveDetail();
-}
-function openImmersiveDetail(gameId) {
     const game = games.find(g => g.id === gameId);
     if (!game) return;
+
     state.currentModalGame = game;
-    const detailContainer = document.getElementById('product-detail');
-    const bg = document.getElementById('immersive-bg');
-    if (bg) {
-        bg.style.backgroundImage = `url('${game.photo}')`;
-        bg.classList.add('active');
-        bg.style.filter = 'blur(8px) brightness(0.4)';
-    }
     const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
-    detailContainer.innerHTML = `
-        <div class="product-detail-overlay" id="detail-overlay">
-            <button class="close-detail" onclick="closeImmersiveDetail()">×</button>
-            <div class="product-detail-content">
-                <div class="detail-photo-col">
-                    <img src="${game.photo}" alt="${game.title}">
+
+    const modalHtml = `
+        <div class="modal-content-custom">
+            <button class="modal-close-custom" onclick="closeModal()">×</button>
+            <div class="modal-left">
+                <img src="${game.photo}" alt="${game.title}">
+            </div>
+            <div class="modal-right">
+                <span class="modal-cat">${game.category}</span>
+                <h2 class="modal-title-custom">${game.title}</h2>
+                <div class="modal-stars">
+                    ${'★'.repeat(Math.round(game.rating))}${'☆'.repeat(5 - Math.round(game.rating))}
                 </div>
-                <div class="detail-info-col">
-                    <div class="detail-meta">
-                        <span class="tag">${game.category}</span>
-                        <span class="platform-badge">${game.platform}</span>
-                        <span style="color:var(--warning)">★ ${game.rating}/5</span>
+                <p class="modal-desc-custom">${game.description}</p>
+                <div class="modal-footer-custom">
+                    <div class="modal-price-pill">
+                        ${game.price} €
+                        ${discount > 0 ? `<span style="font-size:0.8rem; margin-left:10px; opacity:0.7">-${discount}%</span>` : ''}
                     </div>
-                    <h1 class="detail-title">${game.title}</h1>
-                    <p class="detail-description">${game.description}</p>
-                    
-                    <div class="detail-price-block">
-                        <div class="price-stack">
-                            ${discount > 0 ? `<span class="discount-badge" style="background:var(--danger); margin-bottom:0.5rem">Save ${discount}%</span>` : ''}
-                            <div class="detail-price">${game.price} €</div>
-                            ${game.originalPrice ? `<span class="original-price" style="font-size:1.2rem">${game.originalPrice} €</span>` : ''}
-                        </div>
-                        <div class="detail-actions">
-                            <button class="btn btn-primary btn-large" onclick="addToCart(${game.id}); closeModal()">
-                                Ajouter au panier - ${game.price} €
-                            </button>
-                        </div>
-                    </div>
+                    <button class="btn-add-modal" onclick="addToCart(${game.id}, this)">
+                        Ajouter au panier
+                    </button>
                 </div>
             </div>
         </div>
     `;
 
-    document.body.style.overflow = 'hidden';
+    const modalContainer = document.getElementById('game-modal');
+    if (modalContainer) {
+        modalContainer.innerHTML = modalHtml;
+        modalContainer.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
 
-    // Animate entrance
-    const content = detailContainer.querySelector('.product-detail-content');
-    content.style.opacity = '0';
-    content.style.transform = 'translateY(50px)';
-    requestAnimationFrame(() => {
-        content.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        content.style.opacity = '1';
-        content.style.transform = 'translateY(0)';
-    });
+function closeModal() {
+    const modalContainer = document.getElementById('game-modal');
+    if (modalContainer) {
+        modalContainer.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
 
-    detailContainer.style.display = 'block';
+function openImmersiveDetail(gameId) {
+    openModal(gameId);
 }
 
 function closeImmersiveDetail() {
-    const detailContainer = document.getElementById('product-detail');
-    const bg = document.getElementById('immersive-bg');
-
-    if (bg) {
-        bg.classList.remove('active');
-        bg.style.backgroundImage = '';
-    }
-
-    if (detailContainer) {
-        detailContainer.innerHTML = '';
-        detailContainer.style.display = 'none';
-    }
-
-    document.body.style.overflow = 'auto';
+    closeModal();
 }
 function initParticles() {
     const heroSection = document.querySelector('.hero');
@@ -395,16 +520,16 @@ function initParticles() {
         const delay = Math.random() * 5;
 
         particle.style.cssText = `
-            width: ${size}px;
-            height: ${size}px;
-            background: ${Math.random() > 0.5 ? 'var(--primary)' : 'var(--accent)'};
-            left: ${x}%;
-            top: ${y}%;
-            opacity: ${Math.random() * 0.5 + 0.2};
-            box-shadow: 0 0 10px ${Math.random() > 0.5 ? 'var(--primary)' : 'var(--accent)'};
-            animation: floatParticle ${duration}s linear infinite;
-            animation-delay: -${delay}s;
-        `;
+    width: ${size}px;
+    height: ${size}px;
+    background: ${Math.random() > 0.5 ? 'var(--primary)' : 'var(--accent)'};
+    left: ${x}%;
+    top: ${y}%;
+    opacity: ${Math.random() * 0.5 + 0.2};
+    box-shadow: 0 0 10px ${Math.random() > 0.5 ? 'var(--primary)' : 'var(--accent)'};
+    animation: floatParticle ${duration}s linear infinite;
+    animation-delay: -${delay}s;
+    `;
 
         particleContainer.appendChild(particle);
     }
@@ -499,14 +624,14 @@ function initSearchAutocomplete() {
 
         if (matches.length > 0) {
             suggestions.innerHTML = matches.map(m => `
-                <div class="search-suggestion-item" onclick="openImmersiveDetail(${m.id})">
-                    <img src="${m.photo}" class="suggestion-photo" alt="">
-                    <div class="suggestion-info">
-                        <h4>${m.title}</h4>
-                        <p>${m.category} • ${m.price} €</p>
-                    </div>
+        <div class="search-suggestion-item" onclick="openImmersiveDetail(${m.id})">
+            <img src="${m.photo}" class="suggestion-photo" alt="">
+                <div class="suggestion-info">
+                    <h4>${m.title}</h4>
+                    <p>${m.category} • ${m.price} €</p>
                 </div>
-            `).join('');
+            </div>
+    `).join('');
             suggestions.style.display = 'block';
         } else {
             suggestions.style.display = 'none';
@@ -546,17 +671,17 @@ function initTiltEffect() {
 }
 const heroSlides = [
     {
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1605899435973-ca2d1a8861cf?q=80&w=2070&auto=format&fit=crop",
         title: "Le Gaming Réinventé",
         text: "Découvrez une nouvelle ère de jeu."
     },
     {
-        image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
         title: "Immersion Totale",
         text: "Plongez dans des mondes infinis."
     },
     {
-        image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2065&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1614850715649-1d0106293bd1?q=80&w=2070&auto=format&fit=crop",
         title: "Performance Ultime",
         text: "Jouez sans limites."
     }
@@ -572,11 +697,11 @@ function initHeroCarousel() {
 
     container.innerHTML = heroSlides.map((slide, index) => `
         <div class="hero-slide ${index === 0 ? 'active' : ''}" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('${slide.image}')"></div>
-    `).join('');
+            `).join('');
 
     indicators.innerHTML = heroSlides.map((_, index) => `
-        <div class="indicator ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
-    `).join('');
+            <div class="indicator ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+                `).join('');
 
     // Auto rotate
     setInterval(nextSlide, 5000);

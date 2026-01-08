@@ -10,7 +10,7 @@
   <meta name="author" content="GameShop" />
   <meta name="robots" content="index, follow" />
   <title>GameShop - Premium Gaming Store</title>
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=1.2" />
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.0" />
   <meta property="og:title" content="GameShop - Premium Gaming Store" />
   <meta property="og:description" content="Découvrez des milliers de jeux à prix réduit avec livraison instantanée." />
   <meta property="og:image" content="https://via.placeholder.com/1200x630/6366f1/FFFFFF?text=GameShop" />
@@ -421,41 +421,8 @@
   </footer>
 
   <!-- Modal pour les Détails du Jeu -->
-  <div id="game-modal" class="modal">
-    <div class="modal-backdrop"></div>
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <div class="modal-photo-col">
-        <img id="modal-photo" src="" alt="Game Photo" />
-      </div>
-      <div class="modal-info-col">
-        <div class="modal-tags" id="modal-tags">
-          <!-- Tags -->
-        </div>
-        <h2 id="modal-title">Titre</h2>
-        <div class="modal-rating" id="modal-rating">
-          <!-- Étoiles -->
-        </div>
-        <p id="modal-description">Description...</p>
-        <div class="modal-actions">
-          <div class="modal-price-section">
-            <span id="modal-price" class="modal-price">Price</span>
-            <div class="price-info">
-              <span id="modal-original-price" class="original-price">Original</span>
-              <span id="modal-discount" class="discount-badge">Discount</span>
-            </div>
-          </div>
-          <div class="modal-buttons">
-            <button class="btn btn-secondary" onclick="addToCartFromModal()">
-              🛒 Panier
-            </button>
-            <button class="btn btn-primary" onclick="buyNow()">
-              Acheter
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div id="game-modal" class="modal-overlay">
+    <!-- Contenu injecté dynamiquement par dashboard.js -->
   </div>
 
   <!-- Conteneur pour le détail immersif -->
@@ -483,7 +450,7 @@
   </div>
 
   <!-- Scripts -->
-  <script src="assets/js/dashboard.js?v=1.2"></script>
+  <script src="assets/js/dashboard.js?v=2.0"></script>
 </body>
 
 </html>
