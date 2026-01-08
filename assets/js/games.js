@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('product-category').value = categoryText;
         document.getElementById('product-price').value = price;
 
+        document.getElementById('product-platform').value = card.dataset.platform || 'PC';
+
         const typeSelect = document.getElementById('product-type');
         if (typeText === 'Jeu Vidéo' || typeText === 'game') typeSelect.value = 'game';
         else if (typeText === 'Carte Cadeau' || typeText === 'giftcard') typeSelect.value = 'giftcard';
@@ -237,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const description = document.getElementById('product-description').value;
             const type = document.getElementById('product-type').value;
             const category = document.getElementById('product-category').value;
+            const platform = document.getElementById('product-platform').value; // Get platform
             const price = document.getElementById('product-price').value;
             const photo = document.getElementById('product-photo').value;
             const isSpecial = document.getElementById('product-special').checked ? 1 : 0;
@@ -250,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('name', name);
             formData.append('type', type);
             formData.append('category', category);
+            formData.append('platform', platform); // Append platform
             formData.append('price', price);
             formData.append('photo', photo);
             formData.append('description', description);

@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = trim($_POST['name'] ?? '');
         $category = trim($_POST['category'] ?? '');
         $type = trim($_POST['type'] ?? '');
+        $platform = trim($_POST['platform'] ?? 'PC'); // New field
         $price = $_POST['price'] ?? 0;
         $is_special_offer = (int) ($_POST['is_special_offer'] ?? 0);
         $discount_percentage = (int) ($_POST['discount_percentage'] ?? 0);
@@ -44,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $stmt = $conn->prepare("INSERT INTO items (name, category, type, price, photo, description, is_special_offer, discount_percentage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssdssii", $name, $category, $type, $price, $photo, $description, $is_special_offer, $discount_percentage);
+        $stmt = $conn->prepare("INSERT INTO items (name, category, type, platform, price, photo, description, is_special_offer, discount_percentage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssdssii", $name, $category, $type, $platform, $price, $photo, $description, $is_special_offer, $discount_percentage);
 
         if ($stmt->execute()) {
             echo json_encode(['success' => true, 'id' => $stmt->insert_id]);
@@ -61,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = trim($_POST['name'] ?? '');
         $category = trim($_POST['category'] ?? '');
         $type = trim($_POST['type'] ?? '');
+        $platform = trim($_POST['platform'] ?? 'PC'); // New field
         $price = $_POST['price'] ?? 0;
         $is_special_offer = (int) ($_POST['is_special_offer'] ?? 0);
         $discount_percentage = (int) ($_POST['discount_percentage'] ?? 0);
@@ -82,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $stmt = $conn->prepare("UPDATE items SET name = ?, category = ?, type = ?, price = ?, photo = ?, description = ?, is_special_offer = ?, discount_percentage = ? WHERE id = ?");
-        $stmt->bind_param("sssdssiii", $name, $category, $type, $price, $photo, $description, $is_special_offer, $discount_percentage, $id);
+        $stmt = $conn->prepare("UPDATE items SET name = ?, category = ?, type = ?, platform = ?, price = ?, photo = ?, description = ?, is_special_offer = ?, discount_percentage = ? WHERE id = ?");
+        $stmt->bind_param("ssssdssiii", $name, $category, $type, $platform, $price, $photo, $description, $is_special_offer, $discount_percentage, $id);
 
         if ($stmt->execute()) {
             echo json_encode(['success' => true]);

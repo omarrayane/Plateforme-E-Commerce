@@ -12,6 +12,17 @@ function check_login($conn)
 {
     // 1. Check if session already exists
     if (isset($_SESSION['user_id'])) {
+        // Validation supplémentaire : Vérifier si cet ID existe toujours en BDD
+        $stmt = $conn->prepare("SELECT id FROM users WHERE id = ?");
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($res->num_rows === 0) {
+            // L'utilisateur n'existe plus (ex: BDD réinitialisée)
+            session_unset();
+            session_destroy();
+            return false;
+        }
         return true;
     }
 

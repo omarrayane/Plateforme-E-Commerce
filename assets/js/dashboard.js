@@ -14,6 +14,7 @@ async function fetchGames() {
         if (data.success) {
             games = data.items;
             displayGames();
+            renderSpecialOffers(games); // Render Special Offers
             // Fetch cart after games are loaded (or concurrently)
             fetchCart();
         }
@@ -150,7 +151,14 @@ function displayGames() {
 // Reverted to Premium Design with Description Box + New Modal Logic
 
 function createGameCard(game, delay = 0) {
-    const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
+    // Calculer le prix avec remise si applicable
+    const hasDiscount = game.is_special_offer && game.discount_percentage > 0;
+    const discountedPrice = hasDiscount ? (game.price * (1 - game.discount_percentage / 100)).toFixed(2) : null;
+
+    // Tronquer la description à environ 80 caractères
+    const truncatedDescription = game.description && game.description.length > 80
+        ? game.description.substring(0, 80) + '...'
+        : (game.description || '');
 
     return `
         <div class="game-card" data-id="${game.id}" style="animation: bounceIn 0.5s ease backwards ${delay}ms;">
@@ -158,7 +166,7 @@ function createGameCard(game, delay = 0) {
                 <div class="card-tags-top">
                     ${game.tags.slice(0, 2).map(tag => `<span class="tag-badge">${tag.toUpperCase()}</span>`).join('')}
                 </div>
-                ${discount > 0 ? `<span class="discount-pill">-${discount}%</span>` : ''}
+                ${hasDiscount ? `<span class="discount-pill">-${game.discount_percentage}%</span>` : ''}
                 <img src="${game.photo}" alt="${game.title}" loading="lazy">
                 <div class="card-overlay-simple">
                      <button class="btn-quick-view" onclick="openModal(${game.id})">Aperçu rapide</button>
@@ -167,21 +175,22 @@ function createGameCard(game, delay = 0) {
             <div class="card-content">
                 <h3 class="card-title">${game.title}</h3>
                 
-                <div class="card-rating-row">
-                    <div class="rating-stars-small">${'★'.repeat(Math.round(game.rating))}${'☆'.repeat(5 - Math.round(game.rating))}</div>
-                    <span class="rating-number">${game.rating}/5</span>
+                <div class="card-description">
+                    <p>${truncatedDescription}</p>
                 </div>
 
                 <div class="card-footer-row">
-                    <div class="card-price-primary">${game.price} €</div>
-                    <div class="card-actions-icons">
-                        <button class="icon-btn-action" title="Ajouter au panier" onclick="event.stopPropagation(); addToCart(${game.id})">
-                            🛒
-                        </button>
-                        <button class="icon-btn-action" title="Ajouter aux favoris">
-                            ❤️
-                        </button>
+                    <div class="card-price-container">
+                        ${hasDiscount ? `
+                            <span class="card-price-old">${game.price.toFixed(2)}€</span>
+                            <span class="card-price-new">${discountedPrice}€</span>
+                        ` : `
+                            <span class="card-price-primary">${game.price.toFixed(2)}€</span>
+                        `}
                     </div>
+                    <button class="icon-btn-action" title="Ajouter au panier" onclick="event.stopPropagation(); addToCart(${game.id})">
+                        🛒
+                    </button>
                 </div>
             </div>
         </div>
@@ -259,47 +268,66 @@ function addToCart(gameId, btnElement = null) {
     const game = games.find(g => g.id == gameId);
     if (!game) return;
 
-    // Add visual feedback if button element is passed
+    // 1. Visual Feedback
     if (btnElement) {
         const originalContent = btnElement.innerHTML;
         btnElement.classList.add('added');
         btnElement.innerHTML = `<span>Ajouté</span> <span>✔️</span>`;
-
         setTimeout(() => {
             btnElement.classList.remove('added');
             btnElement.innerHTML = originalContent;
         }, 2000);
     }
 
-    // Check if item already exists
+    // 2. Optimistic Update (Local)
     const existingItem = state.cart.find(item => item.id === game.id);
-
     if (existingItem) {
         existingItem.quantity = (existingItem.quantity || 1) + 1;
-        showNotification(`Quantité augmentée: ${game.title} (x${existingItem.quantity})`, 'info');
+        showNotification(` Quantité augmentée: ${game.title}`, 'success');
     } else {
-        // Create a copy to match cart structure with quantity
         const cartItem = { ...game, quantity: 1 };
         state.cart.push(cartItem);
-        showNotification(`Ajouté au panier: ${game.title} `, 'success');
+        showNotification(`Ajouté au panier: ${game.title}`, 'success');
     }
 
     updateCartCount();
     renderCartIems();
 
-    // Persist to local storage
+    // Save to LocalStorage just in case
     localStorage.setItem('cart', JSON.stringify(state.cart));
 
     const sidebar = document.getElementById('cart-sidebar');
     if (sidebar && !sidebar.classList.contains('active')) {
         toggleCart();
     }
+
+    // 3. Background Sync (Server)
+    const formData = new FormData();
+    formData.append('action', 'add_to_cart');
+    formData.append('game_id', gameId);
+
+    fetch('index.php', { method: 'POST', body: formData })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                console.warn('Server sync failed:', data.message);
+                showNotification("Erreur sauvegarde serveur: " + data.message, "danger");
+            } else {
+                // Good, sync success
+                console.log("Server sync success");
+            }
+        })
+        .catch(err => {
+            console.warn('Background sync error:', err);
+            // Silent fail for user
+        });
 }
 // Toggle Wishlist function removed
 function toggleCart() {
     const sidebar = document.getElementById('cart-sidebar');
     const overlay = document.getElementById('cart-overlay');
-    sidebar.classList.toggle('active');
+    if (sidebar) sidebar.classList.toggle('active');
+    if (overlay) overlay.classList.toggle('active');
     renderCartIems();
 }
 function toggleProfileMenu() {
@@ -689,6 +717,49 @@ const heroSlides = [
 
 let currentSlide = 0;
 
+function renderSpecialOffers(gamesList) {
+    const container = document.getElementById('special-offers-container');
+    if (!container) return;
+
+    // Filter games marked as special offers and have a discount
+    const specialOffers = gamesList.filter(game => (game.is_special_offer == 1 || game.is_special_offer === true) && game.discount_percentage > 0);
+
+    if (specialOffers.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);"><h3>Pas d\'offres pour le moment 🌟</h3><p>Revenez plus tard pour des promotions exclusives.</p></div>';
+        return;
+    }
+
+    // Limit to 3 offers for the homepage layout
+    const offersToShow = specialOffers.slice(0, 3);
+
+    container.innerHTML = offersToShow.map((game, index) => {
+        const discountedPrice = (game.price * (1 - game.discount_percentage / 100)).toFixed(2);
+
+        // Highlight logic: first item is "special" (big card), others normal
+        const isHighlight = index === 0;
+        const cardClass = isHighlight ? 'offer-card special' : 'offer-card';
+        const actionBtnClass = isHighlight ? 'btn btn-primary' : 'btn btn-secondary';
+        const actionText = isHighlight ? 'Acheter Maintenant' : "Voir l'Offre";
+        const actionClick = isHighlight ? `addToCart(${game.id})` : `openModal(${game.id})`;
+
+        return `
+          <div class="${cardClass}">
+            <div class="offer-badge">-${game.discount_percentage}%</div>
+            <img src="${game.photo}" alt="${game.title}" loading="lazy" />
+            <div class="offer-content">
+              <h3>${game.title}</h3>
+              <div class="offer-prices">
+                <span class="original-price">${game.price.toFixed(2)}€</span>
+                <span class="discount-price">${discountedPrice}€</span>
+              </div>
+              <a href="#" class="${actionBtnClass}"
+                onclick="event.preventDefault(); ${actionClick}">${actionText}</a>
+            </div>
+          </div>
+        `;
+    }).join('');
+}
+
 function initHeroCarousel() {
     const container = document.getElementById('hero-carousel');
     const indicators = document.getElementById('hero-indicators');
@@ -760,7 +831,7 @@ function nextSlide() {
 document.addEventListener('DOMContentLoaded', () => {
     initFilters();
     fetchGames();
-    updateCartCount();
+    fetchCart(); // Load cart from server
     updateCartCount();
     // updateWishlistCount();
 

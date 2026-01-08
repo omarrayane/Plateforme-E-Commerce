@@ -1070,7 +1070,7 @@ nav a.active::after {
 
 .card-photo-wrapper {
     position: relative;
-    height: 380px;
+    height: 250px;
 }
 
 .card-photo-wrapper img {
@@ -1157,21 +1157,23 @@ nav a.active::after {
     color: white;
 }
 
-.card-rating-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 1.5rem;
+.card-description {
+    margin-bottom: 1rem;
+    min-height: 60px;
+    max-height: 60px;
+    overflow: hidden;
 }
 
-.rating-stars-small {
-    color: #f59e0b;
-    font-size: 0.8rem;
-}
-
-.rating-number {
+.card-description p {
     color: #94a3b8;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-footer-row {
@@ -1180,8 +1182,28 @@ nav a.active::after {
     justify-content: space-between;
 }
 
+.card-price-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .card-price-primary {
     color: #6366f1;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.card-price-old {
+    color: #94a3b8;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.card-price-new {
+    color: #22c55e;
     font-size: 1.4rem;
     font-weight: 800;
 }
@@ -1585,7 +1607,7 @@ nav a.active::after {
 .btn-modal-heart:hover {
     background: rgba(255, 255, 255, 0.2);
 }
-}
+
 
 .modal-buttons .btn {
     flex: 1;
@@ -2692,4 +2714,110 @@ footer {
 [data-theme="light"] .cyber-btn:hover {
     background: var(--primary);
     color: white;
+}
+
+/* --- Cart Close Button Fix --- */
+.close-cart {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    z-index: 1000;
+    /* Ensure it's on top */
+}
+
+.close-cart:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ef4444;
+    /* Red color on hover */
+    transform: rotate(90deg);
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+/* --- Light Mode Fixes --- */
+[data-theme="light"] .game-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .card-title {
+    color: #1e293b;
+}
+
+[data-theme="light"] .card-description p {
+    color: #64748b;
+}
+
+[data-theme="light"] .card-price-primary {
+    color: #2563eb;
+}
+
+[data-theme="light"] .offer-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .offer-content {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8), transparent);
+}
+
+[data-theme="light"] .offer-content h3 {
+    color: #0f172a;
+    text-shadow: none;
+}
+
+[data-theme="light"] .offer-prices .original-price {
+    color: #94a3b8;
+}
+
+[data-theme="light"] .offer-prices .discount-price {
+    color: #dc2626;
+}
+
+[data-theme="light"] .offer-badge {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .product-detail-overlay {
+    background: rgba(248, 250, 252, 0.98);
+}
+
+[data-theme="light"] .detail-price-block {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .detail-title {
+    background: none;
+    -webkit-text-fill-color: #0f172a;
+    color: #0f172a;
+}
+
+[data-theme="light"] .detail-description {
+    color: #475569;
+}
+
+[data-theme="light"] .close-detail {
+    color: #0f172a;
 }

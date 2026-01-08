@@ -205,53 +205,8 @@
 
         </div>
 
-        <div class="offers-grid">
-          <div class="offer-card special">
-            <div class="offer-badge">-70%</div>
-            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg"
-              alt="Red Dead Redemption 2" />
-            <div class="offer-content">
-              <h3>Red Dead Redemption 2</h3>
-              <div class="offer-prices">
-                <span class="original-price">€59.99</span>
-                <span class="discount-price">€17.99</span>
-              </div>
-              <a href="#" class="btn btn-primary"
-                onclick="event.preventDefault(); handleSpecialOffer('Red Dead Redemption 2', 'buy')">Acheter
-                Maintenant</a>
-            </div>
-          </div>
-
-          <div class="offer-card">
-            <div class="offer-badge">-50%</div>
-            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg"
-              alt="The Witcher 3" />
-            <div class="offer-content">
-              <h3>The Witcher 3: Wild Hunt</h3>
-              <div class="offer-prices">
-                <span class="original-price">€39.99</span>
-                <span class="discount-price">€19.99</span>
-              </div>
-              <a href="#" class="btn btn-secondary"
-                onclick="event.preventDefault(); handleSpecialOffer('The Witcher 3: Wild Hunt', 'view')">Voir
-                l'Offre</a>
-            </div>
-          </div>
-
-          <div class="offer-card">
-            <div class="offer-badge">-40%</div>
-            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg"
-              alt="Elden Ring" />
-            <div class="offer-content">
-              <h3>Elden Ring</h3>
-              <div class="offer-prices">
-                <span class="original-price">€59.99</span>
-                <span class="discount-price">€35.99</span>
-              </div>
-              <a href="#" class="btn btn-secondary"
-                onclick="event.preventDefault(); handleSpecialOffer('Elden Ring', 'view')">Voir l'Offre</a>
-            </div>
-          </div>
+        <div class="offers-grid" id="special-offers-container">
+          <!-- Les offres spéciales seront injectées par JS -->
         </div>
       </div>
     </section>

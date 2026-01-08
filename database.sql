@@ -32,15 +32,15 @@ CREATE TABLE items (
 
 CREATE TABLE IF NOT EXISTS cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    item_id INT,
-    product_name VARCHAR(255), -- Added to match user preference
-    amount DECIMAL(10, 2),     -- Added to match user preference (price)
+    user_id INT NOT NULL,
+    item_id INT NOT NULL,
+    product_name VARCHAR(255),
+    amount DECIMAL(10, 2),
     quantity INT DEFAULT 1,
     status ENUM('in_cart', 'pending', 'complete') DEFAULT 'in_cart',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (item_id) REFERENCES items(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
 -- Insert a default user for testing (password is 'password123' hashed with BCRYPT)
