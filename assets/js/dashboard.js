@@ -168,8 +168,14 @@ function createGameCard(game, delay = 0) {
                 </div>
                 ${hasDiscount ? `<span class="discount-pill">-${game.discount_percentage}%</span>` : ''}
                 <img src="${game.photo}" alt="${game.title}" loading="lazy">
-                <div class="card-overlay-simple">
-                     <button class="btn-quick-view" onclick="openModal(${game.id})">Aperçu rapide</button>
+                <div class="card-overlay-premium">
+                     <button class="btn-hover-details" onclick="openModal(${game.id})">
+                        <span>Voir détails</span>
+                        <div class="btn-glow"></div>
+                     </button>
+                     <button class="btn-hover-add" onclick="event.stopPropagation(); addToCart(${game.id})">
+                        🛒
+                     </button>
                 </div>
             </div>
             <div class="card-content">
@@ -360,23 +366,26 @@ function renderCartIems() {
 
             cartItemsContainer.innerHTML += `
         <div class="cart-item">
-            <img src="${item.photo}" alt="${item.title}">
-                <div class="cart-item-info">
-                    <div class="cart-item-title">
-                        ${item.title}
-                    </div>
-                    <div class="cart-item-price">${(item.price * qty).toFixed(2)} €</div>
-
-                    <div class="cart-qty-controls">
-                        <button class="btn-qty" onclick="changeQuantity(${index}, -1)">-</button>
-                        <span class="qty-display">${qty}</span>
-                        <button class="btn-qty" onclick="changeQuantity(${index}, 1)">+</button>
-                    </div>
+            <div class="cart-item-image">
+                <img src="${item.photo}" alt="${item.title}">
+            </div>
+            <div class="cart-item-details">
+                <div class="cart-item-header">
+                    <span class="cart-item-title">${item.title}</span>
+                    <button class="cart-item-remove" onclick="removeFromCart(${index}, false)">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
                 </div>
-                <div class="btn-remove-all" onclick="removeFromCart(${index}, false)" title="Supprimer">
-                    🗑️
+                <div class="cart-item-price-row">
+                    <span class="cart-item-price-single">${(item.price).toFixed(2)} €</span>
+                    <div class="cart-item-qty-container">
+                        <button class="qty-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                        <span class="qty-num">${qty}</span>
+                        <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                    </div>
                 </div>
             </div>
+        </div>
     `;
         });
     }
@@ -483,25 +492,45 @@ function openModal(gameId) {
 
     const modalHtml = `
         <div class="modal-content-custom">
+            <div class="modal-bg-layer" style="background-image: url('${game.photo}')"></div>
+            <div class="modal-overlay-dark"></div>
+            
             <button class="modal-close-custom" onclick="closeModal()">×</button>
-            <div class="modal-left">
-                <img src="${game.photo}" alt="${game.title}">
+            
+            <div class="modal-header-pills">
+                <span class="pill-platform">Multi-plateforme</span>
             </div>
-            <div class="modal-right">
-                <span class="modal-cat">${game.category}</span>
-                <h2 class="modal-title-custom">${game.title}</h2>
-                <div class="modal-stars">
-                    ${'★'.repeat(Math.round(game.rating))}${'☆'.repeat(5 - Math.round(game.rating))}
+
+            <div class="modal-left">
+                <div class="modal-image-wrapper">
+                    <img src="${game.photo}" alt="${game.title}">
                 </div>
+            </div>
+            
+            <div class="modal-right">
+                <div class="modal-cat-row">
+                    <span class="modal-cat">${game.category}</span>
+                    <span class="modal-rating-score">★ ${game.rating}/5</span>
+                </div>
+                
+                <h2 class="modal-title-custom">${game.title}</h2>
+                
                 <p class="modal-desc-custom">${game.description}</p>
+
                 <div class="modal-footer-custom">
                     <div class="modal-price-pill">
                         ${game.price} €
-                        ${discount > 0 ? `<span style="font-size:0.8rem; margin-left:10px; opacity:0.7">-${discount}%</span>` : ''}
+                        ${discount > 0 ? `<span class="discount-label">-${discount}%</span>` : ''}
                     </div>
-                    <button class="btn-add-modal" onclick="addToCart(${game.id}, this)">
-                        Ajouter au panier
-                    </button>
+                    
+                    <div class="modal-actions-primary">
+                        <button class="btn-add-modal" onclick="addToCart(${game.id}, this)">
+                            Ajouter au panier
+                        </button>
+                        <button class="btn-modal-heart" onclick="toggleFavorite(${game.id})">
+                            ❤️
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
