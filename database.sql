@@ -14,7 +14,10 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS items (
+-- Recreate tables to ensure schema matches exactly
+DROP TABLE IF EXISTS cart;
+DROP TABLE IF EXISTS items;
+CREATE TABLE items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     category VARCHAR(100),
@@ -30,11 +33,14 @@ CREATE TABLE IF NOT EXISTS items (
 CREATE TABLE IF NOT EXISTS cart (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    product_name VARCHAR(255) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    status ENUM('pending', 'complete') DEFAULT 'pending',
+    item_id INT,
+    product_name VARCHAR(255), -- Added to match user preference
+    amount DECIMAL(10, 2),     -- Added to match user preference (price)
+    quantity INT DEFAULT 1,
+    status ENUM('in_cart', 'pending', 'complete') DEFAULT 'in_cart',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
 -- Insert a default user for testing (password is 'password123' hashed with BCRYPT)
