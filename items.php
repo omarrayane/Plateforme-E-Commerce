@@ -98,13 +98,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'delete') {
         $id = $_POST['id'] ?? 0;
+
+        // Manual cleanup of dependencies (cart) in case foreign key CASCADE is missing
+        $stmt_cart = $conn->prepare("DELETE FROM cart WHERE item_id = ?");
+        $stmt_cart->bind_param("i", $id);
+        $stmt_cart->execute();
+        $stmt_cart->close();
+
         $stmt = $conn->prepare("DELETE FROM items WHERE id = ?");
         $stmt->bind_param("i", $id);
 
         if ($stmt->execute()) {
             echo json_encode(['success' => true]);
         } else {
-            echo json_encode(['success' => false, 'message' => $stmt->error]);
+            // Check for specific error codes if needed, e.g. 1451 for foreign key constraint
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de la suppression: ' . $stmt->error]);
         }
         $stmt->close();
         exit();
