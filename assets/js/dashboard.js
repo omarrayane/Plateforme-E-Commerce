@@ -204,64 +204,60 @@ function createGameCard(game, delay = 0) {
 }
 
 // Updated Modal to match "Among Us" reference
+// Consolidated Premium OpenModal
 function openModal(gameId) {
     const game = games.find(g => g.id === gameId);
     if (!game) return;
 
     state.currentModalGame = game;
-    const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
+    const hasDiscount = game.is_special_offer && game.discount_percentage > 0;
+    const discountedPrice = hasDiscount ? (game.price * (1 - game.discount_percentage / 100)).toFixed(2) : game.price.toFixed(2);
 
     const modalHtml = `
-        <div class="modal-content-new">
-            <button class="close-modal-new" onclick="closeModal()">×</button>
+        <div class="modal-container-premium">
+            <button class="close-modal-premium" onclick="closeModal()">×</button>
             
-            <div class="modal-image-col">
+            <div class="modal-image-panel">
                 <img src="${game.photo}" alt="${game.title}">
             </div>
             
-            <div class="modal-info-col">
-                <div class="modal-badges">
-                    <span class="modal-badge-category">${game.category}</span>
-                    <span class="modal-badge-platform">${game.platform}</span>
+            <div class="modal-content-panel">
+                <div class="modal-tags-row">
+                    <span class="modal-tag">${game.category}</span>
+                    <span class="modal-tag">${game.platform}</span>
                 </div>
                 
-                <div class="modal-rating-row">
-                    <span class="stars">${'★'.repeat(Math.floor(game.rating))}</span>
-                    <span class="score">${game.rating}/5</span>
+                <h2 class="modal-title-premium">${game.title}</h2>
+                
+                <div class="modal-description-premium">
+                    ${game.description}
                 </div>
-
-                <h2 class="modal-title">${game.title}</h2>
-                <p class="modal-description">${game.description}</p>
-
-                <div class="modal-price-box">
-                    ${discount > 0 ? `<span class="save-badge">Save ${discount}%</span>` : ''}
+                
+                <div class="modal-pricing-footer">
+                    <div class="modal-price-stack">
+                        <span class="modal-price-label">Prix unitaire</span>
+                        <div class="modal-price-value">
+                            ${discountedPrice} €
+                            ${hasDiscount ? `<span class="modal-price-discount">-${game.discount_percentage}%</span>` : ''}
+                        </div>
+                    </div>
                     
-                    <div class="modal-prices">
-                        <span class="current-price">${game.price} €</span>
-                        ${game.originalPrice ? `<span class="old-price">${game.originalPrice} €</span>` : ''}
-                    </div>
-
-                    <div class="modal-actions">
-                        <button class="btn-modal-add" onclick="addToCart(${game.id}, this)">
-                            🛒 Ajouter au panier
-                        </button>
-                        <button class="btn-modal-heart">
-                            ❤️
-                        </button>
-                    </div>
+                    <button class="btn-modal-primary" onclick="addToCart(${game.id}, this)">
+                        <span>🛍️ Ajouter au panier</span>
+                    </button>
                 </div>
             </div>
         </div>
-        `;
+    `;
 
     const modalContainer = document.getElementById('game-modal');
-    // Clear old content structure if needed or just replace innerHTML
-    modalContainer.innerHTML = modalHtml;
-
-    // We need to ensure the modal container has the class 'modal' and is displayed
-    modalContainer.className = 'modal active'; // Simple active toggle
-    modalContainer.style.display = 'flex';
+    if (modalContainer) {
+        modalContainer.innerHTML = modalHtml;
+        modalContainer.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
+
 function updateCartCount() {
     if (cartCount) {
         // Sum of all quantities
@@ -465,84 +461,26 @@ function showNotification(msg, type = 'success') {
     notif.className = `notification ${type} `;
     notif.style.cssText = `
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 20px;
+    left: 20px;
     background: ${type === 'success' ? 'var(--success)' : type === 'warning' ? 'var(--warning)' : type === 'info' ? 'var(--primary)' : 'var(--danger)'};
     color: white;
     padding: 1rem 2rem;
     border-radius: var(--radius-sm);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    animation: slideInRight 0.3s ease forwards;
+    animation: slideInLeft 0.3s ease forwards;
     z-index: 3000;
     `;
     notif.textContent = msg;
     document.body.appendChild(notif);
 
     setTimeout(() => {
-        notif.style.animation = 'slideInRight 0.3s ease reverse forwards';
+        notif.style.animation = 'slideInLeft 0.3s ease reverse forwards';
         setTimeout(() => notif.remove(), 300);
     }, 3000);
 }
-function openModal(gameId) {
-    const game = games.find(g => g.id === gameId);
-    if (!game) return;
+// Redundant openModal removed
 
-    state.currentModalGame = game;
-    const discount = game.originalPrice ? Math.round(((game.originalPrice - game.price) / game.originalPrice) * 100) : 0;
-
-    const modalHtml = `
-        <div class="modal-content-custom">
-            <div class="modal-bg-layer" style="background-image: url('${game.photo}')"></div>
-            <div class="modal-overlay-dark"></div>
-            
-            <button class="modal-close-custom" onclick="closeModal()">×</button>
-            
-            <div class="modal-header-pills">
-                <span class="pill-platform">Multi-plateforme</span>
-            </div>
-
-            <div class="modal-left">
-                <div class="modal-image-wrapper">
-                    <img src="${game.photo}" alt="${game.title}">
-                </div>
-            </div>
-            
-            <div class="modal-right">
-                <div class="modal-cat-row">
-                    <span class="modal-cat">${game.category}</span>
-                    <span class="modal-rating-score">★ ${game.rating}/5</span>
-                </div>
-                
-                <h2 class="modal-title-custom">${game.title}</h2>
-                
-                <p class="modal-desc-custom">${game.description}</p>
-
-                <div class="modal-footer-custom">
-                    <div class="modal-price-pill">
-                        ${game.price} €
-                        ${discount > 0 ? `<span class="discount-label">-${discount}%</span>` : ''}
-                    </div>
-                    
-                    <div class="modal-actions-primary">
-                        <button class="btn-add-modal" onclick="addToCart(${game.id}, this)">
-                            Ajouter au panier
-                        </button>
-                        <button class="btn-modal-heart" onclick="toggleFavorite(${game.id})">
-                            ❤️
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    const modalContainer = document.getElementById('game-modal');
-    if (modalContainer) {
-        modalContainer.innerHTML = modalHtml;
-        modalContainer.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-}
 
 function closeModal() {
     const modalContainer = document.getElementById('game-modal');

@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$password = "01092005";
+$password = "01092005f5";
 $database = "gaming_store";
 
 $conn = new mysqli($host, $user, $password, $database);

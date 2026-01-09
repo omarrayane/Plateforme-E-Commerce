@@ -13,7 +13,7 @@ function check_login($conn)
     // 1. Check if session already exists
     if (isset($_SESSION['user_id'])) {
         // Validation supplémentaire : Vérifier si cet ID existe toujours en BDD
-        $stmt = $conn->prepare("SELECT id FROM users WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, username, email, role FROM users WHERE id = ?");
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
         $res = $stmt->get_result();
@@ -23,6 +23,13 @@ function check_login($conn)
             session_destroy();
             return false;
         }
+        
+        // Re-populate session if missing data (after update)
+        $user = $res->fetch_assoc();
+        if (!isset($_SESSION['username'])) $_SESSION['username'] = $user['username'];
+        if (!isset($_SESSION['email'])) $_SESSION['email'] = $user['email'];
+        if (!isset($_SESSION['user_role'])) $_SESSION['user_role'] = $user['role'];
+
         return true;
     }
 
@@ -30,7 +37,7 @@ function check_login($conn)
     if (isset($_COOKIE['remember_user'])) {
         $token = $_COOKIE['remember_user'];
 
-        $stmt = $conn->prepare("SELECT id, username, role FROM users WHERE username = ?");
+        $stmt = $conn->prepare("SELECT id, username, email, role FROM users WHERE username = ?");
         $stmt->bind_param("s", $token);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -39,6 +46,7 @@ function check_login($conn)
             // Re-establish session
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
             $_SESSION['user_role'] = $user['role'];
             return true;
         }
