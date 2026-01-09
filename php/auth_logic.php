@@ -13,7 +13,7 @@ function handle_login($conn) {
         if (empty($username) || empty($password)) {
             $error = "Please enter both username and password.";
         } else {
-            $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
+            $stmt = $conn->prepare("SELECT id, username, email, password, role FROM users WHERE username = ?");
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -22,18 +22,15 @@ function handle_login($conn) {
                 if (password_verify($password, $user['password'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
+                    $_SESSION['email'] = $user['email'];
                     $_SESSION['user_role'] = $user['role'];
 
                     if ($remember) {
                         set_remember_cookie($username);
                     }
 
-                    // Redirect based on role
-                    if ($user['role'] === 'admin') {
-                        header("Location: admin.php");
-                    } else {
-                        header("Location: index.php");
-                    }
+                    // All users (including admins) land on the home page
+                    header("Location: index.php");
                     exit();
                 } else {
                     $error = "Invalid username or password.";
