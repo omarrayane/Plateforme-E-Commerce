@@ -22,6 +22,7 @@ CREATE TABLE items (
     name VARCHAR(255) NOT NULL,
     category VARCHAR(100),
     type ENUM('game', 'giftcard') NOT NULL,
+    platform VARCHAR(50) DEFAULT 'PC',
     price DECIMAL(10, 2) NOT NULL,
     photo TEXT,
     description TEXT,
