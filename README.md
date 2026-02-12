@@ -1,154 +1,83 @@
-# 🛒 Mini-Projet – Conception d’une plateforme e-commerce Web
+# GameShop – E-Commerce Platform
 
-## 🌐 Préambule — Pourquoi ce projet ?
-
-Les plateformes e-commerce sont parmi les **applications Web les plus complexes et les plus utilisées** au monde.  
-Elles combinent à la fois :
-- gestion des utilisateurs,
-- sécurité,
-- persistance des données,
-- logique métier,
-- performance,
-- et expérience utilisateur.
-
-Ce mini-projet vous place dans une **situation proche d’un contexte professionnel réel** :  
-concevoir une **application e-commerce complète**, depuis la base de données jusqu’à l’interface utilisateur, en respectant les **principes d’architecture Web modernes**.
-
-
----
-![E-commerce](assets/Banière.PNG)
-
-## 🧠 Intitulé du mini-projet
-
-### **Concevoir et développer une plateforme e-commerce Web**
+Welcome to **GameShop**, a modern and robust e-commerce web application designed for digital gaming products and gift cards. This project demonstrates a full-stack implementation of a real-world online store, featuring user authentication, product management, a shopping cart, and an admin dashboard.
 
 ---
 
-## 🎯 Objectifs pédagogiques
+## 🚩 Project Overview
 
-À l’issue de ce mini-projet, vous serez capables de :
-
-- Concevoir une **architecture Web complète** (frontend / backend)
-- Implémenter une **logique métier e-commerce**
-- Gérer l’**authentification** et les **rôles utilisateurs**
-- Manipuler **cookies et sessions**
-- Interagir avec une **base de données**
-
-### Technologies attendues
-- **HTML / CSS**
-- **JavaScript**
-- **HTTP**
-- **PHP**
-- **AJAX**
-- **Web Services REST**
-- **Base de données (MySQL)**
+GameShop is a web-based e-commerce platform where users can browse, search, and purchase digital games and gift cards. The application is built with a focus on security, usability, and scalability, providing both end-users and administrators with a seamless experience.
 
 ---
 
-## 📌 Principe général du projet
+## ✨ Key Features
 
-Chaque équipe doit développer un **site Web e-commerce fonctionnel**, permettant la vente d’un type d’item **librement choisi**  
-(exemples : livres, produits électroniques, vêtements, équipements sportifs, etc.).
-
----
----
-
-## 🧑‍🤝‍🧑 Travail en équipe & Git
-
-- Le projet se réalise **en équipe**
-- Chaque équipe doit créer un **compte GitHub** portant le nom :
-pravan_2025_team_X
-
-
-👉 Le numéro `X` de chaque équipe est fourni dans:
-https://docs.google.com/spreadsheets/d/1V4Tjh3S1lrXuGrPJDkl9YSHlWG5u-_uKOngrlVyUb00/edit?gid=0#gid=0
-
-### Dépôt Git
-- Chaque équipe doit :
-  - Cloner le dépôt du mini-projet
-  - Travailler avec **le compte de l’équipe**
-  - Pusher régulièrement le code (comment ce qu'on faisait en TP)
-  
----
-
-## 🧩 Fonctionnalités obligatoires
-
-### 🏪 Boutique
-- Une **page principale** présentant les items disponibles à la vente
-- Chaque item doit contenir :
-  - un **nom**
-  - une **description**
-  - un **prix**
-- Les items doivent être **chargés depuis une base de données**
+- **User Authentication:** Secure registration, login, password reset, and session management.
+- **Product Catalog:** Dynamic listing of games and gift cards, loaded from a MySQL database.
+- **Advanced Search & Filtering:** Search by keyword, filter by category, platform, and price range.
+- **Product Details:** Dedicated page for each item with detailed description, price, and add-to-cart option.
+- **Shopping Cart:** Add, update, or remove items; view cart contents and total price in real time.
+- **Order Management:** Users can place orders; admins can view and manage all orders.
+- **Admin Dashboard:** Admins can add, edit, or delete products and manage users securely.
+- **Role-Based Access:** Strict separation between user and admin functionalities.
+- **Responsive UI:** Modern, mobile-friendly interface with instant feedback and smooth navigation.
+- **Newsletter & Contact:** Users can subscribe to updates and contact support directly from the site.
 
 ---
 
-### 🔍 Recherche & filtrage
-- Mise en place d’un **moteur de recherche**
-- Filtrage selon **plusieurs critères** :
-  - prix
-  - catégorie
-  - mot-clé
-  - autres critères pertinents
+## 🛠️ Technologies Used
+
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla, AJAX)
+- **Backend:** PHP (OOP & procedural), RESTful endpoints
+- **Database:** MySQL
+- **Session & Cookie Management:** Secure handling of user sessions and cookies
+- **Other:** Responsive design, accessibility best practices
 
 ---
 
-### 📄 Page détail d’un item
-- Consultation d’une **page dédiée** à chaque item
-- Affichage détaillé :
-  - description complète
-  - prix
-  - option d’ajout au panier
+## 🗄️ Database Schema
+
+The platform uses a MySQL database with the following main tables:
+
+- `users`: Stores user credentials, roles (`user`, `admin`), and password reset tokens.
+- `items`: Contains product details (games, gift cards), categories, prices, and descriptions.
+- `cart`: Tracks items added to user carts and order status.
+
+Refer to [`database.sql`](database.sql) for the full schema and sample data.
 
 ---
 
-### 👤 Authentification utilisateur
-- Possibilité pour un utilisateur de :
-  - se **connecter**
-  - se **déconnecter**
-- Gestion des **sessions**
-- Utilisation des **cookies**
+## 🚀 Getting Started
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   ```
+2. **Set up the database:**
+   - Import `database.sql` into your MySQL server.
+   - Update database credentials in `php/db.php` if needed.
+3. **Run the application:**
+   - Place the project in your web server directory (e.g., `htdocs` for XAMPP).
+   - Access `index.php` via your browser.
 
 ---
 
-### 🛍️ Panier
-- Ajouter un item au panier
-- Supprimer un item du panier
-- Consulter l’état du panier :
-  - items sélectionnés
-  - quantités
-  - total
+## 🔒 Security & Roles
+
+- All sensitive actions (admin, user management, product editing) are protected by authentication and role checks.
+- Passwords are securely hashed.
+- Admin access is strictly enforced.
 
 ---
 
-### 🔐 Administration
-- Connexion d’un **administrateur**
-- Interface permettant à l’administrateur de :
-  - ajouter de nouveaux items
-  - modifier les items existants
-  - supprimer des items
+## 📦 Project Structure
 
-⚠️ L’accès aux fonctionnalités d’administration doit être **strictement protégé**.
-
----
-
-## 🗄️ Base de données
-
-La base de données doit contenir au minimum :
-- une table `users`
-- une table `items`
-- une table `cart` (ou équivalent)
-- une gestion des rôles (`user`, `admin`)
-
-Le schéma doit être **documenté** et **justifié**.
+- `index.php` – Main entry point, handles routing and AJAX for the shop
+- `php/` – Backend logic (authentication, database, business logic)
+- `templates/` – HTML templates for dashboard, admin, users, etc.
+- `assets/` – CSS and JavaScript files
+- `database.sql` – Database schema and sample data
+- `tools/` – Utilities for database setup and maintenance
 
 
-## ⏰ Date limite de remise
-
-📅 **10 janvier 2026**  
-🕛 **à minuit (23h59)**
-
----
-
-## 🚀 Ce que vous allez vraiment apprendre
 
