@@ -22,6 +22,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Update Order Status ---
+    if (ordersTable) {
+        ordersTable.addEventListener('change', (e) => {
+            if (e.target.classList.contains('status-select')) {
+                const select = e.target;
+                const status = select.value;
+                const id = select.dataset.id;
+
+                // Update select appearance
+                select.className = `status-select ${status}`;
+
+                // In a real app, you would send this to the server:
+                console.log(`Updating order ${id} status to: ${status}`);
+                
+                // Show a brief notification (optional)
+                const originalColor = select.style.borderColor;
+                select.style.borderColor = 'var(--primary-blue)';
+                setTimeout(() => {
+                    select.style.borderColor = '';
+                }, 500);
+            }
+        });
+    }
+
     // --- View Order Details ---
     if (ordersTable) {
         ordersTable.addEventListener('click', (e) => {

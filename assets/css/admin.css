@@ -373,6 +373,50 @@ td {
     color: #ffc107;
 }
 
+/* Status Select Styles */
+.status-select {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-card);
+    color: var(--text-main);
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition);
+}
+
+.status-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+}
+
+.status-select.pending {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.status-select.accepted {
+    border-color: #2ecc71;
+    color: #2ecc71;
+}
+
+.status-select.refused {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.status-select.complete {
+    border-color: #64ffda;
+    color: #64ffda;
+}
+
+.status-select option {
+    background: var(--bg-dark);
+    color: var(--text-main);
+}
+
 .btn-action {
     background: none;
     border: 1px solid var(--glass-border);
