@@ -1,5 +1,5 @@
 <?php
-ob_start(); // Start output buffering to catch any stray text/warnings
+ob_start(); 
 require_once 'php/session.php';
 
 // Prevent PHP warnings from breaking JSON in AJAX requests
